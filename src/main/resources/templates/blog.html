@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: headtag">
+<meta charset="utf-8" />
+</head>
+<body>
+
+	<div class="body_content">
+
+		<div class="headerdiv">
+			<h1>
+				<a href="/blog" th:href="@{/}" th:text="${#conf.title}">title</a>
+			</h1>
+		</div>
+
+		<div class="container mainparent">
+
+			<!--/* 一覧表示 */-->
+			<div th:if="${entry == null}" class="col-md-9 maindiv">
+				<div th:if="${currentTag != null}" class="matched_label">
+					<div class="label label-success">
+						<span th:text="${currentTag}">tagname</span>
+						(<span th:text="${pagingList.totalCount}">99</span>)
+					</div>
+					<script>
+						afnfblog.pagingPath = "t/${f:ue(currentTag)}?page=";
+					</script>
+				</div>
+				<div th:if="${currentMonth != null}" class="matched_label">
+					<div class="label label-success">
+						<span th:text="${currentMonth}">Apr 2014</span>
+						(<span th:text="${pagingList.totalCount}">99</span>)
+					</div>
+				</div>
+
+				<div class="summary_entries_container">
+					<span th:each="entry : ${pagingList.entries}" th:include="/common/entry_flagment :: entry_flagment"></span>
+				</div>
+				<span th:include="/common/pagination :: pagination"></span>
+			</div>
+
+			<!--/* 単一表示 */-->
+			<div th:if="${entry != null}" class="col-md-9 maindiv">
+
+				<span th:include="/common/entry_flagment :: entry_flagment"></span>
+
+				<div class="comments_container">
+					<hr />
+					<div th:each="comment : ${comments}" class="comment">
+						<div th:if="${comment.state == 0}">
+							<span data-t="blog.wait">(承認待ち)</span>
+							<span class="subinfo indent" f:date="${comment.postdate}">2001/2/3 04:05</span>
+						</div>
+						<div th:if="${comment.state == 1}">
+							<span th:text="${comment.name}">comment.name</span>
+							<span class="subinfo indent" f:date="${comment.postdate}">2001/2/3 04:05</span>
+							<div class="comment_content" f:comment="${comment.content}">comment.content</div>
+						</div>
+						<hr />
+					</div>
+
+					<form th:action="@{/{id}(id=${entry.id})}" th:object="${comment}" class="ajaxform form-horizontal validate" method="post">
+						<div class="form-group">
+							<label data-t="blog.yourname">お名前</label>
+							<input th:field="*{name}" class="form-control input_short_text required" size="16" minlength="2" maxlength="100" />
+							<input type="submit" name="post" value="submit" class="btn btn-primary" data-t="blog.submit" />
+						</div>
+						<textarea th:field="*{content}" class="form-control textarea_comment required" rows="3" minlength="2" maxlength="2000"></textarea>
+					</form>
+				</div>
+			</div>
+
+			<div th:replace="/common/sidebar :: sidebar"></div>
+		</div>
+	</div>
+
+	<span th:include="/common/template :: footerdiv"></span>
+
+	<script>
+		afnfblog.ajaxSuccess = function(thisform, data) {
+			thisform[0].reset();
+			afnfblog.alert(t("blog.comment_ok"), afnfblog.reloadPage);
+		};
+
+		(function(i, s, o, g, r, a, m) {
+			i['GoogleAnalyticsObject'] = r;
+			i[r] = i[r] || function() {
+				(i[r].q = i[r].q || []).push(arguments)
+			}, i[r].l = 1 * new Date();
+			a = s.createElement(o), m = s.getElementsByTagName(o)[0];
+			a.async = 1;
+			a.src = g;
+			m.parentNode.insertBefore(a, m)
+		})(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+		ga('create', 'UA-46276114-3', 'afnf.net');
+		ga('send', 'pageview');
+	</script>
+</body>
+</html>

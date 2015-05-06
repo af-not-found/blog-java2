@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+<body>
+
+	<div class="col-md-3 sidebar" th:fragment="sidebar">
+
+		<div>
+			<h3 class="sb_header">latests</h3>
+			<div class="sb_recents">
+				<div th:each="entry : ${entryCache.recents}" class="sb_entry_title">
+					<a href='/9999' th:href='@{/{id}(id=${entry.id})}' th:text="${entry.title}">title</a>
+				</div>
+				<div class="sb_more">
+					<a href='/' th:href='@{/}'>more...</a>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+
+		<div>
+			<h3 class="sb_header">tags</h3>
+			<div class="sb_tags">
+				<div class='sb_clop'>
+					<div th:each="tagInfo : ${entryCache.tagList}"
+					     th:class="${'sb_tag ' + (tagInfo.key == currentTag ? 'sb_matched' : '')}">
+						<a href='/t/tagname' th:href='@{/t/{tag}(tag=${tagInfo.key})}' th:text="${tagInfo.disp}">tagname</a>
+						(<span th:text="${tagInfo.count}">999999</span>)
+					</div>
+				</div>
+				<div th:if="${entryCache.tagList.size() >= 12}" class="sb_more">
+					<a href="#" onclick="return afnfblog.expand(this);">more...</a>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+
+		<div>
+			<h3 class="sb_header">archive</h3>
+			<div class="sb_archive">
+				<div>
+					<a href='/' th:href='@{/}'>ALL</a>
+					(<span th:text="${entryCache.totalNormalCount}">999999</span>)
+				</div>
+				<div class='sb_clop'>
+					<div th:each="month : ${entryCache.monthlyList}" 
+					     th:class="${'sb_month ' + (month.disp == currentMonth ? 'sb_matched' : '')}">
+						<a href='/m/201501' th:href='@{/m/{month}(month=${month.key})}' th:text="${month.disp}">201501</a>
+						(<span th:text="${month.count}">9999</span>)
+					</div>
+				</div>
+				<div th:if="${entryCache.monthlyList.size() >= 12}" class="sb_more">
+					<a href="#" onclick="return afnfblog.expand(this);">more...</a>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+
+		<div>
+			<h3 class="sb_header">author</h3>
+			<div class="sb_content">
+				afnfという名前でやってますよ
+				<div>
+					<img src='/static/img/email1.png' as:src='/static/img/email1.png' />
+				</div>
+			</div>
+		</div>
+
+		<hr />
+
+		<div>
+			<h3 class="sb_header">links</h3>
+			<div class="sb_content">
+				<div>
+					<a href="http://blog.afnf.net/blogdemo/" target="_blank">ブログデモサイト</a>
+				</div>
+				<div>
+					<a href="http://blog.afnf.net/blogdemo/_admin/" target="_blank">デモサイト管理画面</a>
+				</div>
+				<div>
+					<a href="/rss.xml" target="_blank">RSS</a>
+				</div>
+				<div>
+					<a href="https://github.com/af-not-found/" target="_blank">github af-not-found</a>
+				</div>
+				<div>
+					<a href="https://play.google.com/store/apps/details?id=com.appspot.afnf4199ga.twawm" target="_blank">twawm for WM3800R</a>
+				</div>
+				<div>
+					<a href="https://play.google.com/store/apps/details?id=net.afnf.and.twawm2" target="_blank">twawm2 for NAD11</a>
+				</div>
+				<div>
+					<a href="http://w.livedoor.jp/twawm/" target="_blank">twawm wiki</a>
+				</div>
+				<div>
+					<a href="https://play.google.com/store/apps/details?id=com.appspot.afnf4199ga.wmgraph" target="_blank">WM Graph</a>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+</body>
+</html>

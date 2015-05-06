@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: headtag">
+<meta charset="utf-8" />
+</head>
+<body>
+
+	<div th:replace="/common/admin_menu :: admin_menu"></div>
+
+	<div class="container admindiv">
+		<script>
+			afnfblog.pagingPath = "_admin/comments?page=";
+		</script>
+		<span th:include="/common/pagination :: pagination"></span>
+
+		<hr />
+
+		<div class="comments_container">
+			<div th:each="comment,stat : ${pagingList.comments}" th:id='${"c"+comment.id}'>
+				<span th:text="${comment.name}"></span>
+				<span class="subinfo indent" f:date="${comment.postdate}">2001/2/3 04:05</span>
+
+				<div th:switch="${comment.state}">
+					<div th:case="0" class='comment_content waiting_comment' f:comment="${comment.content}">comment.content</div>
+					<div th:case="1" class='comment_content normal_comment shortened_comment' f:comment="${comment.content}">comment.content</div>
+					<div th:case="2" class='comment_content deleted_comment shortened_comment' f:comment="${comment.content}">comment.content</div>
+				</div>
+
+				<div class="subinfo" th:text="${comment.clientinfo}">comment.clientinfo</div>
+
+				<form class="ajaxform" method="post">
+					<span style="padding-right: 10px">
+						<a th:href="@{/{eid}(eid=${comment.entryid})}" th:text="${comment.entryid}">9999</a>
+						-
+						<span th:text="${comment.id}">99</span>
+					</span>
+					<input type="hidden" name="id" th:value="${comment.id}" />
+					<input type="radio" name='state' th:checked="${comment.state==1}"
+					   th:id='${"c"+comment.id+"_r1"}' value="1" class="form-control radio_common stateRadio" />
+					<label th:for='${"c"+comment.id+"_r1"}'>approve</label>
+					<input type="radio" name='state' th:checked="${comment.state==2}"
+					   th:id='${"c"+comment.id+"_r2"}' value="2" class="form-control radio_common stateRadio" />
+					<label th:for='${"c"+comment.id+"_r2"}'>delete</label>
+					<span class="ajaxret"></span>
+				</form>
+
+				<hr />
+			</div>
+		</div>
+
+		<span th:include="/common/pagination :: pagination"></span>
+	</div>
+
+	<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
+
+	<span th:include="/common/template :: footerdiv"></span>
+
+	<script th:inline="javascript">
+		afnfblog.admin_comment_init();
+	</script>
+
+</body>
+</html>

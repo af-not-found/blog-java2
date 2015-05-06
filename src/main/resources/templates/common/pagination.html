@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+<body th:fragment="pagination">
+
+	<div th:if="${pagingList != null and pagingList.limit >= 1}" class="pagination_container">
+		<ul class="pagination">
+			<!--/*  template.jspで afnfblog.pagenatorを起動 */-->
+		</ul>
+	</div>
+
+	<div th:if="${prevMonth != null or nextMonth != null}" class="pagination_container">
+		<ul class="pager">
+			<li th:if="${nextMonth != null}" class="next">
+				<a href="/m/201401" th:href="@{/m/{nextMonth}(nextMonth=${nextMonth.key})}">&larr; Newer</a>
+			</li>
+			<li th:if="${prevMonth != null}" class="previous">
+				<a href="/m/201403" th:href="@{/m/{prevMonth}(prevMonth=${prevMonth.key})}">Older &rarr;</a>
+			</li>
+		</ul>
+	</div>
+
+</body>
+</html>

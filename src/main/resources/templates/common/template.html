@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:fragment="headtag">
+<meta charset="utf-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+<title f:title="true">title</title>
+
+<!--[if lt IE 9]>
+<script src="//oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+<![endif]-->
+<script src="/static/jquery-1.11.0.min.js" as:src="/static/jquery-1.11.0.min.js"></script>
+<script src="/static/blog.min.js" as:src="/static/blog.min.js"></script>
+<script th:inline="javascript">
+	afnfblog.contextRoot = /*[[@{/}]]*/"/blog";
+	afnfblog.totalPageCount = /*[[${pagingList == null ? 0 : pagingList.totalPageCount}]]*/0;
+	afnfblog.thisPage = /*[[${pagingList == null ? 0 : pagingList.thisPage}]]*/0;
+</script>
+
+<link rel="stylesheet" type="text/css" href="/static/blog.min.css" as:href="/static/blog.min.css" />
+<style type="text/css" th:inline="text">
+.headerdiv {
+	background-image: url('[[${#as.url("/static/img/top_800.jpg")}]]');
+}
+
+@media screen and (max-width : 700px) {
+	.headerdiv {
+		background-image: url('[[${#as.url("/static/img/top_540.jpg")}]]');
+	}
+}
+
+@media screen and (max-width : 540px) {
+	.headerdiv {
+		background-image: url('[[${#as.url("/static/img/top_440.jpg")}]]');
+	}
+}
+
+@media screen and (max-width : 330px) {
+	.headerdiv {
+		background-image: url('[[${#as.url("/static/img/top_330.jpg")}]]');
+	}
+}
+</style>
+
+<link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" as:href="/static/img/favicon.ico" />
+
+<link title="AppConfig.getInstance().getTitle()" rel="alternate" type="application/rss+xml" href="/rss.xml" />
+<meta name="author" content="afnf" />
+
+</head>
+<body>
+
+	<!-- body_content -->
+
+	<div th:fragment="footerdiv">
+		<div class="footerdiv">
+			<div class="subinfo">
+				<a href="https://github.com/af-not-found/blog-java1" target="_blank">blog-java1</a>
+				engine (build: <span th:text="${#conf.buildDate}">2002/3/4 05:06:07</span>)
+			</div>
+		</div>
+
+		<div style="display: none;" id="lean_overlay"></div>
+		<div style="display: none;" id="alert_modal">
+			<div id="alert_text"></div>
+			<button id="close_modal" class="btn btn-primary">close</button>
+		</div>
+	</div>
+
+	<!-- footer_script -->
+
+</body>
+</html>

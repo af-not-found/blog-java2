@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: headtag">
+<meta charset="utf-8" />
+</head>
+<body>
+
+	<div th:replace="/common/admin_menu :: admin_menu"></div>
+
+	<div class="container admindiv">
+
+		<div class="cache_container border_table_container">
+			<table>
+				<thead>
+					<tr>
+						<th>name</th>
+						<th>value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>last modified</td>
+						<td f:time="${cache.lastModified}">cache.lastModified</td>
+					</tr>
+					<tr>
+						<td>cache updated</td>
+						<td f:time="${cache.updated}">cache.updated</td>
+					</tr>
+					<tr>
+						<td>totalNormal count</td>
+						<td th:text="${cache.totalNormalCount}" class="totalNormalCount">cache.totalNormalCount</td>
+					</tr>
+					<tr>
+						<td>tagList count</td>
+						<td th:text="${cache.tagList.size()}" class="tagCount">cache.tagList.size()</td>
+					</tr>
+					<tr>
+						<td>monthlyList count</td>
+						<td th:text="${cache.monthlyList.size()}" class="monthCount">cache.monthlyList.size()</td>
+					</tr>
+				</tbody>
+			</table>
+
+			<div th:if="${param.elapsed != null}" class="div_elapsed">
+				elapsed :
+				<span th:text="${param.elapsed[0]}"></span>
+				ms
+			</div>
+
+			<form class="ajaxform" method="post">
+				<input type="submit" name="update" value="update" class="btn btn-primary"></input>
+			</form>
+		</div>
+	</div>
+
+	<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
+
+	<span th:include="/common/template :: footerdiv"></span>
+
+	<script>
+		$(".btn_cache").removeClass("btn-default").addClass("btn-primary");
+		afnfblog.ajaxSuccess = function(thisform, data) {
+			afnfblog.movePage(location.pathname + "?elapsed=" + data.elapsed);
+		};
+	</script>
+
+</body>
+</html>

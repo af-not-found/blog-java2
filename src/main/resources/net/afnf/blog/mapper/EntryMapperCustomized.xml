@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.afnf.blog.mapper.EntryMapperCustomized">
+
+	<resultMap id="BaseResultMap" type="net.afnf.blog.domain.Entry">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="tags" property="tags" jdbcType="VARCHAR" />
+		<result column="content" property="content" jdbcType="VARCHAR" />
+	    <result column="content_html" jdbcType="VARCHAR" property="contentHtml" />
+		<result column="postdate" property="postdate" jdbcType="TIMESTAMP" />
+		<result column="state" property="state" jdbcType="SMALLINT" />
+		<result column="comment_count" property="commentCount" jdbcType="INTEGER" />
+	</resultMap>
+
+	<select id="selectWithCond" resultMap="BaseResultMap" parameterType="net.afnf.blog.bean.EntryCondition">
+		select
+			e.id, e.title, e.tags, e.postdate, e.state, c.comment_count
+		from
+			entries e
+		left join
+		    (select c.entryid, count(c.id) as comment_count from comments c where c.state != 2 group by c.entryid) c
+			on e.id = c.entryid
+		<where>
+			<if test="filter == true">
+				e.state = 1
+			</if>
+			<if test="tag != null">
+				and ', '||e.tags||', ' like '%, '||#{tag,jdbcType=VARCHAR}||', %'
+			</if>
+			<if test="month != null">
+				and to_char(date_trunc('month', e.postdate), 'YYYYMM') = #{month,jdbcType=VARCHAR}
+			</if>
+		</where>
+		order by
+			e.id desc
+		<if test="limit > 0">
+		limit #{limit,jdbcType=INTEGER}
+			offset #{offset,jdbcType=INTEGER}
+		</if>
+	</select>
+
+	<select id="countWithCond" resultType="java.lang.Integer" parameterType="net.afnf.blog.bean.EntryCondition">
+		select
+			count(e.id)
+		from
+			entries e
+		<where>
+			<if test="filter == true">
+				e.state = 1
+			</if>
+			<if test="tag != null">
+				and ', '||e.tags||', ' like '%, '||#{tag,jdbcType=VARCHAR}||', %'
+			</if>
+			<if test="month != null">
+				and to_char(date_trunc('month', e.postdate), 'YYYYMM') = #{month,jdbcType=VARCHAR}
+			</if>
+		</where>
+	</select>
+
+	<select id="selectMonthlyCount" resultType="net.afnf.blog.bean.NameCountPair">
+		select
+			to_char(i.date, 'Mon YYYY') as disp, 
+			to_char(i.date, 'YYYYMM') as key, 
+			i.cnt as count
+		from
+			(
+				select
+					date_trunc('month', e.postdate) as date, count(e.id) as cnt
+				from
+					entries e
+				where
+					e.state = 1
+				group by
+					date_trunc('month', e.postdate)
+			) i
+		order by
+			date desc
+	</select>
+	
+	<select id="selectTagCount" resultType="net.afnf.blog.bean.NameCountPair">
+		select
+			e.tags as key, 
+			count(e.id) as count
+		from
+			entries e
+		where
+			e.state = 1
+		group by
+			e.tags
+	</select>
+</mapper>

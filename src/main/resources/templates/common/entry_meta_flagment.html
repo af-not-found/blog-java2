@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8" />
+</head>
+<body>
+
+	<div class="text-right" th:fragment="entry_meta_flagment">
+
+		<span th:if="${isAdminPage == true and isSummaryPage == true}">
+			<span th:if="${entry.state == 0}" class="state_draft">draft</span>
+			<span th:if="${entry.state == 2}" class="state_deleted">deleted</span>
+		</span>
+
+		<span class="tags_in_entry">
+			<a th:each="tag : ${entry.tagList}" href='/t/tagname' th:href='@{/t/{tag}(tag=${tag})}' th:text="${tag}">tagName</a>
+		</span>
+
+		<span th:if="${isAdminPage == false and isProductionAndNormalSite == true}" class="indent_short">
+			<a href="http://b.hatena.ne.jp/entry/http://blog.afnf.net/blog/9999"
+				th:href="http://b.hatena.ne.jp/entry/http://blog.afnf.net/blog/{id}(id=${entry.id})">
+				<img src="http://b.hatena.ne.jp/entry/image/http://blog.afnf.net/blog/9999"
+					th:src="http://b.hatena.ne.jp/entry/image/http://blog.afnf.net/blog/{id}(id=${entry.id})" height="13px" />
+			</a>
+		</span>
+
+		<span class="indent_short subinfo" f:date="${entry.postdate}">2001/2/3 04:05</span>
+	</div>
+
+</body>
+</html>

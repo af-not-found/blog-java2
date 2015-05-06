@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ja" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/common/template :: headtag">
+<meta charset="utf-8" />
+</head>
+<body>
+
+	<div th:replace="/common/admin_menu :: admin_menu"></div>
+
+	<div th:if="${entry != null and entry.id != null}" class="container mainparent entry_edit_parent_div">
+		<div class="col-md-3 sidebar entry_edit_form_div">
+			<form th:object="${entry}" class="ajaxform form-horizontal validate" method="post">
+				<input type="hidden" th:field="*{id}" />
+				<input type="hidden" th:field="*{contentHtml}" id="contentHtml" />
+				<label>title</label>
+				<input type="text" th:field="*{title}" class="form-control input_entry_text required" minlength="2" />
+				<br />
+
+				<label>tags</label>
+				<input type="text" th:field="*{tags}" class="form-control input_entry_text" />
+				<br />
+
+				<textarea th:field="*{content}" class="form-control textarea_entry required" minlength="2"></textarea>
+				<br />
+
+				<input type="radio" th:field="*{state}" id="r0" value="0" class="form-control radio_common stateRadio" />
+				<label for="r0" class="label_draft">draft</label>
+				<input type="radio" th:field="*{state}" id="r1" value="1" class="form-control radio_common stateRadio" />
+				<label for="r1">normal</label>
+				<input type="radio" th:field="*{state}" id="r2" value="2" class="form-control radio_common stateRadio" />
+				<label for="r2" class="label_deleted">delete</label>
+				<br />
+
+				<span th:if="${entry.postdate != null}" f:date="${entry.postdate}">2001/2/3 04:05</span>
+				<br th:if="${entry.postdate != null}" />
+
+				<div style="margin-top: 20px">
+					<input type="submit" class="btn btn-primary" name="post" value="post" id="submit_btn" />
+					<span class="ajaxret"></span>
+				</div>
+			</form>
+		</div>
+		<div class="col-md-9 maindiv preview_container">
+			<button class="btn_width btn btn-default btn-primary">675px</button>
+			<button class="btn_width btn btn-default">568px</button>
+			<button class="btn_width btn btn-default">360px</button>
+			<button class="btn_width btn btn-default">314px</button>
+			<div class="preview entry_content border_table_container"></div>
+		</div>
+	</div>
+
+	<div th:if="${entry == null or entry.id == null}" class="container admindiv">
+		<script>
+			afnfblog.pagingPath = "_admin/entries?page=";
+		</script>
+		<span th:include="/common/pagination :: pagination"></span>
+
+		<div class="summary_entries_container">
+			<span th:each="entry : ${pagingList.entries}" th:include="/common/entry_flagment :: entry_flagment"></span>
+		</div>
+
+		<span th:include="/common/pagination :: pagination"></span>
+	</div>
+
+	<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
+
+	<span th:include="/common/template :: footerdiv"></span>
+
+	<script th:inline="javascript">
+		var btn_selector = /*[[${entry != null and entry.id == -1 ? ".btn_new" : ".btn_entries"}]]*/"";
+		afnfblog.admin_entry_init(btn_selector);
+	</script>
+
+</body>
+</html>

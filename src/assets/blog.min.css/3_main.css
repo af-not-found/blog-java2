@@ -1,0 +1,559 @@
+/*!
+ * blog.afnf.net
+ */
+body,h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
+	font-family: "Lucida Grande", "ヒラギノ丸ゴ ProN W4", "Hiragino Maru Gothic ProN", Meiryo, Arial, sans-serif;
+}
+
+.headerdiv {
+	max-width: 900px;
+	height: 100px;
+	margin: 0px auto 0px auto;
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+.headerdiv a {
+	color: #444;
+	text-decoration: none;
+}
+
+.headerdiv h1 {
+	font-size: 36px;
+	color: black;
+	margin-top: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	padding-bottom: 0px;
+	padding-top: 50px;
+	padding-left: 80px;
+	max-width: 970px;
+	text-shadow: 1px 1px 0px #AAA, 2px 2px 0px #666;
+}
+
+.admin_headerdiv {
+	margin-top: 10px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.mainparent {
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
+.maindiv {
+	max-width: 675px;
+	padding-top: 30px;
+	padding-left: 15px;
+	padding-right: 30px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.admindiv {
+	padding-left: 10px;
+	padding-right: 10px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.sidebar {
+	background-color: #f7f7f7;
+	margin-top: 0px;
+	margin-left: 0px;
+	padding-top: 20px;
+	padding-left: 10px;
+	padding-right: 0px;
+	padding-bottom: 20px;
+}
+
+.sb_matched a {
+	font-weight: bold;
+	font-size: 110%;
+	color: #327BBA;
+}
+
+.sb_more {
+	padding-left: 16px;
+}
+
+.sb_entry_title {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+	margin-bottom: 3px;
+}
+
+.sb_header {
+	font-size: 20px;
+}
+
+.sb_recents,.sb_archive,.sb_tags,.sb_content {
+	margin-bottom: 20px;
+	padding: 0px 0px 5px 10px;
+}
+
+.sb_clop {
+	max-height: 180px;
+	overflow: hidden;
+}
+
+.sb_month {
+	padding-left: 10px;
+}
+
+.entry_title {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 26px;
+}
+
+.summary_entry_title {
+	margin-top: 0px;
+	margin-bottom: 0px;
+	font-size: 20px;
+}
+
+.summary_entries_container {
+	margin: 0px;
+}
+
+.summary_entry_container {
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+
+.summary_entry_container a:VISITED {
+	color: #82CBFF
+}
+
+.admindiv>.summary_entries_container {
+	margin: 10px auto 0px auto;
+	max-width: 600px;
+}
+
+.admindiv .summary_entry_container {
+	margin-bottom: 10px;
+}
+
+.entry_container {
+	
+}
+
+.label {
+	font-size: 95%;
+}
+
+.matched_label {
+	margin-bottom: 25px;
+}
+
+.entry_content {
+	margin-top: 30px;
+	word-wrap: break-word;
+}
+
+.entry_content h1 {
+	font-size: 20px;
+	margin-top: 38px;
+	border-left: 5px solid #428BCA;
+	padding-left: 10px;
+}
+
+.entry_content h2 {
+	font-size: 18px;
+	margin-top: 36px;
+	border-left: 4px solid #428BCA;
+	padding-left: 8px;
+}
+
+.entry_content h3 {
+	font-size: 16px;
+	margin-top: 34px;
+	border-left: 3px solid #428BCA;
+	padding-left: 6px;
+}
+
+.entry_content h4 {
+	font-size: 14px;
+	margin-top: 32px;
+	border-left: 2px solid #428BCA;
+	padding-left: 6px;
+}
+
+.entry_content img {
+	max-width: 100%;
+	width: auto;
+	height: auto;
+}
+
+.border_table_container table {
+	border-collapse: collapse;
+	border-spacing: 0;
+	padding-left: 10px;
+	margin-left: 10px;
+	margin-bottom: 10px;
+}
+
+.border_table_container table th {
+	font-weight: bold;
+	background-color: #F8F8F8;
+}
+
+.border_table_container table tr {
+	border: 1px solid #DDDDDD;
+}
+
+.border_table_container table tr:nth-child(2n) {
+	background-color: #F8F8F8;
+}
+
+.border_table_container table th,.border_table_container table td {
+	border: 1px solid #DDDDDD;
+	padding: 3px 3px;
+	text-align: center;
+}
+
+.subinfo {
+	font-size: 90%;
+	color: gray;
+}
+
+.indent {
+	margin-left: 30px;
+}
+
+.indent_short {
+	margin-left: 10px;
+}
+
+.tags_in_entry {
+	font-size: 90%;
+	margin-left: 10px;
+}
+
+.tags_in_entry a,.tags_in_entry a:VISITED {
+	color: #808080
+}
+
+.comments_container {
+	margin-top: 10px;
+}
+
+.maindiv>.comments_container {
+	padding-left: 20px;
+	padding-right: 20px;
+}
+
+.admindiv>.comments_container>div>hr {
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.comment_content {
+	margin-left: 20px;
+}
+
+.waiting_comment {
+	background-color: #ffe6e6;
+}
+
+.normal_comment {
+	background-color: #e6ffe6;
+}
+
+.deleted_comment {
+	background-color: #999999;
+}
+
+.shortened_comment {
+	height: 18px;
+	overflow: hidden;
+}
+
+.label_draft {
+	color: #ffa0a0;
+}
+
+.label_deleted {
+	color: #8888bb;
+}
+
+.state_draft {
+	font-weight: bold;
+	color: #ffa0a0;
+	margin-left: 10px;
+}
+
+.state_deleted {
+	font-weight: bold;
+	color: #8888bb;
+	margin-left: 10px;
+}
+
+.pagination {
+	margin-top: 0px;
+	margin-bottom: 0px;
+}
+
+.pagination_container {
+	text-align: center;
+	min-height: 34px;
+}
+
+.pagination>li {
+	text-align: center;
+}
+
+.pagination>li>a {
+	padding-left: 0px;
+	padding-right: 0px;
+	width: 30px;
+}
+
+.footerdiv {
+	margin-top: 40px;
+	margin-bottom: 20px;
+	text-align: center;
+}
+
+.input_entry_text {
+	width: 70%;
+	display: inline;
+}
+
+.input_short_text {
+	width: 160px;
+	display: inline;
+}
+
+.textarea_comment {
+	width: 90%;
+}
+
+textarea.textarea_entry {
+	width: 100%;
+	height: 60%;
+}
+
+.radio_common {
+	width: auto;
+	height: auto;
+	display: inline;
+}
+
+#lean_overlay {
+	position: fixed;
+	z-index: 100;
+	top: 0px;
+	left: 0px;
+	height: 100%;
+	width: 100%;
+	background: #000;
+}
+
+#alert_modal {
+	position: fixed;
+	left: 50%;
+	z-index: 11000;
+	border-radius: 5px;
+	background: white;
+	text-align: center;
+	opacity: 0;
+	padding: 20px 20px 20px 20px;
+}
+
+#alert_text {
+	padding: 10px 40px 20px 40px;
+}
+
+.ajaxret {
+	margin-left: 10px;
+	color: green;
+}
+
+.comments_container .form-group {
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 5px;
+}
+
+.div_elapsed {
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.error {
+	color: red;
+}
+
+code {
+	font-size: 100%;
+}
+
+.login_container {
+	margin-top: 50px;
+	text-align: center;
+}
+
+.login_info {
+	margin-bottom: 30px;
+	color: red;
+}
+
+.demo_password {
+	margin-top: 5px;
+	margin-bottom: 20px;
+}
+
+.entry_edit_form_div {
+	padding-left: 3px;
+	padding-right: 3px;
+}
+
+form>label {
+	margin-right: 10px;
+}
+
+.btn_width {
+	padding: 3px 6px;
+}
+
+.preview_container {
+	padding-left: 30px;
+	padding-right: 15px;
+}
+
+.cache_container {
+	text-align: center;
+	margin-top: 10px;
+}
+
+.cache_container>table {
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 20px;
+}
+
+.entry_content>ul,.entry_content>ol {
+	padding-left: 45px;
+}
+
+ul ul,ol ul,ul ol,ol ol {
+	padding-left: 30px;
+}
+
+@media screen and ( min-width : 1150px) {
+	.entry_edit_parent_div {
+		width: 1130px;
+	}
+	.entry_edit_form_div {
+		width: 450px;
+	}
+}
+
+@media screen and ( max-width : 919px) {
+	.sidebar {
+		margin-top: 40px;
+		margin-left: 60px;
+		margin-right: 60px;
+	}
+	.headerdiv h1 {
+		padding-left: 60px;
+		max-width: 750px;
+	}
+	.maindiv {
+		padding-top: 15px;
+		padding-left: 15px;
+		padding-right: 15px;
+	}
+	.preview_container {
+		margin-top: 60px;
+	}
+	textarea.textarea_entry {
+		height: 400px;
+	}
+	.entry_edit_form_div {
+		padding-top: 5px;
+		margin-top: 5px;
+	}
+}
+
+@media screen and ( max-width : 700px) {
+	.headerdiv h1 {
+		font-size: 34px;
+		padding-left: 40px;
+	}
+}
+
+@media screen and ( max-width : 540px) {
+	.headerdiv h1 {
+		font-size: 32px;
+		padding-left: 20px;
+	}
+	.sidebar {
+		margin-left: 20px;
+		margin-right: 20px;
+	}
+	.entry_title {
+		font-size: 22px;
+	}
+	.summary_entry_title {
+		font-size: 18px;
+	}
+	.indent {
+		margin-left: 20px;
+	}
+	.maindiv {
+		padding-top: 15px;
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+	.entry_content h1 {
+		font-size: 17px;
+		margin-top: 34px;
+	}
+	.entry_content h2 {
+		font-size: 16px;
+		margin-top: 32px;
+	}
+	.entry_content h3 {
+		font-size: 15px;
+		margin-top: 30px;
+	}
+	.entry_content h4 {
+		font-size: 14px;
+		margin-top: 28px;
+	}
+	.maindiv>.comments_container {
+		padding-left: 8px;
+		padding-right: 8px;
+	}
+	.pager .next>a,.pager .next>span {
+		margin-left: 3px; /*mod*/
+	}
+	.pager .previous>a,.pager .previous>span {
+		margin-right: 3px; /*mod*/
+	}
+	.admin_headerdiv {
+		margin-bottom: 10px;
+	}
+	.entry_edit_form_div {
+		margin-left: 8px;
+		margin-right: 8px;
+	}
+	.entry_content>ul,.entry_content>ol {
+		padding-left: 30px;
+	}
+	ul ul,ol ul,ul ol,ol ol {
+		padding-left: 15px;
+	}
+}
+
+@media screen and ( max-width : 330px) {
+	.headerdiv h1 {
+		font-size: 28px;
+		padding-left: 5px;
+	}
+}
