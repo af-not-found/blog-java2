@@ -46,7 +46,7 @@
 
 <link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" as:href="/static/img/favicon.ico" />
 
-<link title="AppConfig.getInstance().getTitle()" rel="alternate" type="application/rss+xml" href="/rss.xml" />
+<link title="title" th:title="${#conf.title}" rel="alternate" type="application/rss+xml" href="/rss.xml" />
 <meta name="author" content="afnf" />
 
 </head>
@@ -57,7 +57,7 @@
 	<div th:fragment="footerdiv">
 		<div class="footerdiv">
 			<div class="subinfo">
-				<a href="https://github.com/af-not-found/blog-java1" target="_blank">blog-java1</a>
+				<a href="https://github.com/af-not-found/blog-java1" target="_blank">blog-java2</a>
 				engine (build: <span th:text="${#conf.buildDate}">2002/3/4 05:06:07</span>)
 			</div>
 		</div>

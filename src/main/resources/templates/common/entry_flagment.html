@@ -14,7 +14,7 @@
 			<a href="/99999" th:href="@{/_admin/entries/{id}(id=${entry.id})}" th:text="${entry.title}">title</a>
 		</h3>
 
-		<div th:replace="/common/entry_meta_flagment :: entry_meta_flagment"></div>
+		<div th:replace="common/entry_meta_flagment :: entry_meta_flagment"></div>
 
 		<div th:if="${isAdminPage == false and entry.commentCount > 0}" class="text-right subinfo cmcount">
 			<span data-t="blog.comments">comments</span>
@@ -28,11 +28,11 @@
 			<a href="/99999" th:href="@{/{id}(id=${entry.id})}" th:text="${entry.title}">title</a>
 		</h3>
 
-		<div th:replace="/common/entry_meta_flagment :: entry_meta_flagment"></div>
+		<div th:replace="common/entry_meta_flagment :: entry_meta_flagment"></div>
 
 		<div class="entry_content border_table_container" th:utext="${entry.contentHtml}">entry.contentHtml</div>
 
-		<div th:replace="/common/entry_meta_flagment :: entry_meta_flagment"></div>
+		<div th:replace="common/entry_meta_flagment :: entry_meta_flagment"></div>
 
 		<div style="margin-top: 40px" class="cmcount">
 			<span data-t="blog.comments">comments</span>
