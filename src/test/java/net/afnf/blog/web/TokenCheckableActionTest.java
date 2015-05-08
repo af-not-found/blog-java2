@@ -19,9 +19,9 @@ public class TokenCheckableActionTest extends SpringTestBase {
 
     @Test
     public void testCheckToken1() {
-        String prevType = AppConfig.getInstance().getType();
+        String prevType = AppConfig.getInstance().getActiveProfile();
 
-        AppConfig.getInstance().setType("demo");
+        AppConfig.getInstance().setActiveProfile("dev-demo");
         TokenCheckableAction target = new BlogAction();
         try {
             target.checkToken();
@@ -31,7 +31,7 @@ public class TokenCheckableActionTest extends SpringTestBase {
             assertTrue(e instanceof JsonResponseDemoSiteErrorException);
         }
         finally {
-            AppConfig.getInstance().setType(prevType);
+            AppConfig.getInstance().setActiveProfile(prevType);
         }
     }
 

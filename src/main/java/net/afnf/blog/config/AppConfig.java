@@ -7,8 +7,8 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-    @Value("${bj2.app.type}")
-    private String type = null;
+    @Value("${spring.profiles.active}")
+    private String activeProfile = null;
 
     @Value("${bj2.app.title}")
     private String title;
@@ -22,7 +22,6 @@ public class AppConfig {
     @Value("${bj2.app.cipherSeed}")
     private String cipherSeed;
 
-    @Value("${bj2.app.buildDate}")
     private String buildDate;
 
     @Value("${bj2.assets.baseurl}")
@@ -61,25 +60,25 @@ public class AppConfig {
     }
 
     public boolean isDemoSite() {
-        return StringUtils.equalsIgnoreCase(getType(), "demo");
+        return StringUtils.indexOf(getActiveProfile(), "-demo") != -1;
     }
 
     public boolean isTestSite() {
-        return StringUtils.equalsIgnoreCase(getType(), "test");
+        return StringUtils.indexOf(getActiveProfile(), "-test") != -1;
     }
 
     public boolean isProductionAndNormalSite() {
-        return StringUtils.equals(getType(), "production-normal");
+        return StringUtils.equals(getActiveProfile(), "production-normal");
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public String getType() {
-        return type;
+    public String getActiveProfile() {
+        return activeProfile;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setActiveProfile(String activeProfile) {
+        this.activeProfile = activeProfile;
     }
 
     public String getTitle() {
