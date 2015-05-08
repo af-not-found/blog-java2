@@ -22,9 +22,8 @@ public class BlogJava2App {
     }
 
     protected static ConfigurableApplicationContext shutdownAndRun(Class<?> clazz, String[] args) {
-
         try {
-            return SpringApplication.run(clazz, args);
+            return run(clazz, args);
         }
         catch (Exception e) {
 
@@ -41,7 +40,7 @@ public class BlogJava2App {
                         logger.info("Shutdown OK");
 
                         // launch again
-                        return SpringApplication.run(clazz, args);
+                        return run(clazz, args);
                     }
                     else {
                         throw new IllegalStateException("Invalid response code : " + responseCode);
@@ -58,5 +57,10 @@ public class BlogJava2App {
                 throw e;
             }
         }
+    }
+
+    private static ConfigurableApplicationContext run(Class<?> clazz, String[] args) {
+        SpringApplication app = new SpringApplication(clazz);
+        return app.run(args);
     }
 }

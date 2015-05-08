@@ -13,9 +13,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.afnf.blog.config.AppConfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class IfModifiedSinceFilter implements Filter {
 
-    //private static Logger logger = LoggerFactory.getLogger(IfModifiedSinceFilter.class);
+    private static Logger logger = LoggerFactory.getLogger(IfModifiedSinceFilter.class);
 
     private static long lastModified = 0;
 
@@ -50,9 +53,12 @@ public class IfModifiedSinceFilter implements Filter {
 
                         // lastModifiedと一致すれば304を返す
                         long since = req.getDateHeader("If-Modified-Since");
-                        //logger.info(" since=" + since + ", lastmod=" + getLastModified());
-                        if (since == getLastModified()) {
-                            // logger.info(" 304");
+                        boolean notModified = since == getLastModified();
+                        if (logger.isDebugEnabled()) {
+                            logger.debug(" since=" + since + ", lastmod=" + getLastModified() + ", "
+                                    + (notModified ? "notModified" : "modified"));
+                        }
+                        if (notModified) {
                             res.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
                             return;
                         }

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd" >
+<generatorConfiguration>
+	<classPathEntry location="${user.home}\.m2\repository\org\postgresql\postgresql\9.3-1100-jdbc41\postgresql-9.3-1100-jdbc41.jar" />
+	<context id="context1">
+		<property name="javaFileEncoding" value="utf-8" />
+		<jdbcConnection driverClass="org.postgresql.Driver" connectionURL="jdbc:postgresql://localhost:35432/blog" userId="postgres"
+			password="postgres" />
+		<javaModelGenerator targetPackage="net.afnf.blog.domain" targetProject="blog-java1" />
+		<sqlMapGenerator targetPackage="net.afnf.blog.mapper" targetProject="blog-java1/src/main/resources" />
+		<javaClientGenerator targetPackage="net.afnf.blog.mapper" targetProject="blog-java1" type="XMLMAPPER" />
+		<table tableName="users" domainObjectName="User" />
+		<table tableName="entries" domainObjectName="Entry" />
+		<table tableName="comments" domainObjectName="Comment" />
+	</context>
+</generatorConfiguration>
