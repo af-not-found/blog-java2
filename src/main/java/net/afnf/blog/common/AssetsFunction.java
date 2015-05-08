@@ -1,6 +1,7 @@
 package net.afnf.blog.common;
 
 import java.io.File;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -37,10 +38,23 @@ public class AssetsFunction {
             // .versionがあれば読み取り、なければ0
             version = 0;
             try {
-                File verFile = new File(appConfig.getAssetsDestDir(), path + ".version");
-                if (verFile.exists()) {
-                    String versionStr = FileUtils.readFileToString(verFile);
-                    version = NumberUtils.toInt(StringUtils.trim(versionStr));
+                // jarから起動された場合は、getResourceAsStreamで読む
+                String from = appConfig.getAssetsDestDir();
+                if (StringUtils.startsWith(from, "/")) {
+                    try (InputStream inputStream = this.getClass().getResourceAsStream(from + path + ".version")) {
+                        version = NumberUtils.toInt(IOUtils.toString(inputStream, "UTF-8"));
+                    }
+                    catch (Throwable e) {
+                        logger.warn("failed to version, path=" + path + ", e=" + e.toString());
+                    }
+                }
+                // srcから起動された場合は、Fileとして読む
+                else {
+                    File verFile = new File(from, path + ".version");
+                    if (verFile.exists()) {
+                        String versionStr = FileUtils.readFileToString(verFile);
+                        version = NumberUtils.toInt(StringUtils.trim(versionStr));
+                    }
                 }
             }
             catch (Throwable e) {
@@ -95,8 +109,8 @@ public class AssetsFunction {
                             Process process = pb.start();
                             String stdout = IOUtils.toString(process.getInputStream());
                             int exitValue = process.waitFor();
-                            logger.info("exitValue : " + exitValue);
-                            logger.info(stdout.trim());
+                            logger.debug("exitValue : " + exitValue);
+                            logger.debug(stdout.trim());
 
                             // 成功すればバージョンを更新
                             if (exitValue == 0) {
