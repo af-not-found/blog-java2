@@ -2,6 +2,7 @@ package net.afnf.blog.it;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.File;
@@ -20,6 +21,10 @@ import net.afnf.blog.mapper.EntryMapperCustomized;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpUriRequest;
+import org.apache.http.impl.client.HttpClients;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.Rule;
@@ -160,5 +165,21 @@ public class SeleniumTestBase extends SpringTestBase {
             new IllegalStateException(e);
         }
         return rssString;
+    }
+
+    protected void checkSecurityHeaders() {
+
+        // http-headerを読む方法がSeleniumに無いらしいので、HttpClientを使う
+        HttpUriRequest req = new HttpGet(baseurl);
+        try (CloseableHttpResponse res = HttpClients.createDefault().execute(req)) {
+            assertEquals("1; mode=block", res.getFirstHeader("X-XSS-Protection").getValue());
+            assertEquals("nosniff", res.getFirstHeader("x-content-type-options").getValue());
+            assertEquals("DENY", res.getFirstHeader("x-frame-options").getValue());
+            assertNull(res.getFirstHeader("Strict-Transport-Security"));
+            assertNull(res.getFirstHeader("Cache-Control"));
+        }
+        catch (Exception e) {
+            fail(e.toString());
+        }
     }
 }

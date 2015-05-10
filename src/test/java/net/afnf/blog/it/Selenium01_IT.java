@@ -78,6 +78,9 @@ public class Selenium01_IT extends SeleniumTestBase {
         assertEquals("0", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("0", wd.findElement(By.className("tagCount")).getText());
         assertEquals("0", wd.findElement(By.className("monthCount")).getText());
+
+        // セキュリティ用ヘッダのチェック
+        checkSecurityHeaders();
     }
 
     @Test
@@ -90,6 +93,9 @@ public class Selenium01_IT extends SeleniumTestBase {
         assertElementNotFound(".sb_month");
 
         assertEquals(0, StringUtils.countMatches(getRssString(), "<item>"));
+
+        // セキュリティ用ヘッダのチェック
+        checkSecurityHeaders();
     }
 
     @Test
