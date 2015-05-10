@@ -48,10 +48,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/_admin/") // 
                 //
                 .and() //
+                .csrf().disable() //
+                .headers().cacheControl().disable() //  
+                .headers().httpStrictTransportSecurity().disable() //  
+                //
                 .headers().contentTypeOptions().frameOptions().xssProtection() //
-                .and() //
-                .headers().cacheControl().httpStrictTransportSecurity().disable() //  
-                .csrf().disable();
+        ;
     }
 
     @Override
