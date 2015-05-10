@@ -19,9 +19,9 @@ class GlobalDefaultExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ModelAndView defaultErrorHandler(HttpServletRequest req, Exception e) throws Exception {
 
-        String viewName = "common/error";
+        String viewName = "redirect:/";
         if (e instanceof JsonResponseDemoSiteErrorException) {
-            viewName = "common/json_error_demosite";
+            viewName = "error_demosite_json";
             logger.warn(e.getClass().getName());
         }
         else if (e instanceof JsonResponseException) {
