@@ -22,8 +22,8 @@
 						<span th:text="${currentTag}">tagname</span>
 						(<span th:text="${pagingList.totalCount}">99</span>)
 					</div>
-					<script>
-						afnfblog.pagingPath = "t/${f:ue(currentTag)}?page=";
+					<script th:inline="javascript">
+						afnfblog.pagingPath =  /*[[${"t/" + currentTag + "?page="}]]*/""t/tagname?page=";
 					</script>
 				</div>
 				<div th:if="${currentMonth != null}" class="matched_label">
