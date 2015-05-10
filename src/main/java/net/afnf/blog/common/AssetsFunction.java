@@ -42,7 +42,9 @@ public class AssetsFunction {
                 String from = appConfig.getAssetsDestDir();
                 if (StringUtils.startsWith(from, "/")) {
                     try (InputStream inputStream = this.getClass().getResourceAsStream(from + path + ".version")) {
-                        version = NumberUtils.toInt(IOUtils.toString(inputStream, "UTF-8"));
+                        if (inputStream != null) {
+                            version = NumberUtils.toInt(IOUtils.toString(inputStream, "UTF-8"), 0);
+                        }
                     }
                     catch (Throwable e) {
                         logger.warn("failed to version, path=" + path + ", e=" + e.toString());
