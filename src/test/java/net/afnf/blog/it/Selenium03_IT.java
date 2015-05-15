@@ -38,7 +38,7 @@ public class Selenium03_IT extends SeleniumTestBase {
         // キャッシュ更新
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForLoaded();
+        waitForCacheUpdate();
 
         assertEquals("10004", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("18", wd.findElement(By.className("tagCount")).getText());

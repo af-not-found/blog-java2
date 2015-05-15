@@ -42,7 +42,7 @@ public class Selenium02_IT extends SeleniumTestBase {
         // キャッシュ更新
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForLoaded();
+        waitForCacheUpdate();
 
         assertEquals("10004", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("18", wd.findElement(By.className("tagCount")).getText());
@@ -104,9 +104,15 @@ public class Selenium02_IT extends SeleniumTestBase {
         List<WebElement> matches = find(".sb_matched");
         assertEquals(1, matches.size());
         assertThat(matches.get(0).getText(), startsWith("tag4 ("));
+        matches = find(".label-success");
+        assertEquals(1, matches.size());
+        assertThat(matches.get(0).getText(), startsWith("tag4 ("));
 
         wd.findElement(By.linkText("タグb")).click();
         matches = find(".sb_matched");
+        assertEquals(1, matches.size());
+        assertThat(matches.get(0).getText(), startsWith("タグb ("));
+        matches = find(".label-success");
         assertEquals(1, matches.size());
         assertThat(matches.get(0).getText(), startsWith("タグb ("));
 

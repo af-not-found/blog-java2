@@ -47,6 +47,7 @@ public class SeleniumTestBase extends SpringTestBase {
     protected static final long NO_ELEMENT_WAIT = 200;
     protected static final long AJAX_WAIT = 200;
     protected static final long IMPLICITLY_WAIT = 10000;
+    protected static final long CACHE_UPDATE_WAIT = 2000;
 
     protected static String baseurl;
     protected static WebDriver wd;
@@ -117,6 +118,11 @@ public class SeleniumTestBase extends SpringTestBase {
 
     protected void waitForLoaded() {
         AfnfUtil.sleep(POST_WAIT);
+        waitForPageLoaded();
+    }
+
+    protected void waitForCacheUpdate() {
+        AfnfUtil.sleep(CACHE_UPDATE_WAIT);
         waitForPageLoaded();
     }
 

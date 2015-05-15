@@ -28,9 +28,6 @@ public abstract class SpringTestBase {
     private static Logger logger = LoggerFactory.getLogger(SpringTestBase.class);
 
     @Autowired
-    private ApplicationContext ctx;
-
-    @Autowired
     protected DataSource dataSource;
 
     static boolean initialized = true;
@@ -58,9 +55,7 @@ public abstract class SpringTestBase {
         rdp.setIgnoreFailedDrops(true);
         rdp.setContinueOnError(false);
 
-        JdbcTemplate template = new JdbcTemplate(dataSource);
-
-        try (Connection conn = DataSourceUtils.getConnection(template.getDataSource());) {
+        try (Connection conn = DataSourceUtils.getConnection(dataSource)) {
             rdp.populate(conn);
         }
         catch (Exception e) {
