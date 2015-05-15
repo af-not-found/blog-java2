@@ -1,7 +1,6 @@
 package net.afnf.blog.common;
 
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
@@ -13,6 +12,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.web.util.UriUtils;
 
 public class MyFunction {
 
@@ -26,7 +26,7 @@ public class MyFunction {
 
     public String urlEncodeUtf8(String str) {
         try {
-            return URLEncoder.encode(str, "UTF-8");
+            return UriUtils.encodePath(str, "UTF-8");
         }
         catch (UnsupportedEncodingException e) {
             logger.error("urlEncodeUtf8 failed", e);

@@ -73,7 +73,7 @@ public class Selenium01_IT extends SeleniumTestBase {
         // キャッシュ更新
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForLoaded();
+        waitForCacheUpdate();
 
         assertEquals("0", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("0", wd.findElement(By.className("tagCount")).getText());
@@ -419,9 +419,15 @@ public class Selenium01_IT extends SeleniumTestBase {
         List<WebElement> matches = find(".sb_matched");
         assertEquals(1, matches.size());
         assertEquals("タグa (1)", matches.get(0).getText());
+        matches = find(".label-success");
+        assertEquals(1, matches.size());
+        assertEquals("タグa (1)", matches.get(0).getText());
 
         wd.findElement(By.linkText("tag1")).click();
         matches = find(".sb_matched");
+        assertEquals(1, matches.size());
+        assertEquals("tag1 (2)", matches.get(0).getText());
+        matches = find(".label-success");
         assertEquals(1, matches.size());
         assertEquals("tag1 (2)", matches.get(0).getText());
     }
@@ -445,7 +451,7 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.findElement(By.id("tags")).sendKeys("\\9");
         wd.findElement(By.id("tags")).click();
         wd.findElement(By.id("tags")).clear();
-        wd.findElement(By.id("tags")).sendKeys("tag1, tag3, タグa, タグb");
+        wd.findElement(By.id("tags")).sendKeys("tag1, tag3, タグa, タグb, タタ グ-=c");
         wd.findElement(By.id("r1")).click(); // normal
 
         wd.findElement(By.cssSelector("span.md_element")).click();
@@ -455,10 +461,10 @@ public class Selenium01_IT extends SeleniumTestBase {
 
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForLoaded();
+        waitForCacheUpdate();
 
         assertEquals("3", wd.findElement(By.className("totalNormalCount")).getText());
-        assertEquals("5", wd.findElement(By.className("tagCount")).getText());
+        assertEquals("6", wd.findElement(By.className("tagCount")).getText());
         assertEquals("1", wd.findElement(By.className("monthCount")).getText());
     }
 
@@ -468,14 +474,14 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.get(baseurl);
         assertEquals(3, find(".summary_entry_title").size());
         assertEquals(3, find(".sb_entry_title").size());
-        assertEquals(5, find(".sb_tag").size());
+        assertEquals(6, find(".sb_tag").size());
         assertEquals(1, find(".sb_month").size());
 
         List<WebElement> tags = find(".sb_tag");
         assertEquals("tag1 (3)", tags.get(0).getText());
         assertEquals("tag3 (3)", tags.get(1).getText());
         assertEquals("タグa (2)", tags.get(2).getText());
-        assertEquals(5, tags.size());
+        assertEquals(6, tags.size());
 
         List<WebElement> cmcount = find(".cmcount");
         assertThat(cmcount.get(0).getText(), endsWith("(1)"));
@@ -525,5 +531,13 @@ public class Selenium01_IT extends SeleniumTestBase {
         assertThat(cmcount.get(1).getText(), endsWith("(1)"));
         assertThat(cmcount.get(2).getText(), endsWith("(5)"));
         assertEquals(3, cmcount.size());
+
+        wd.findElement(By.linkText("タタ グ-=c")).click();
+        List<WebElement> matches = find(".sb_matched");
+        assertEquals(1, matches.size());
+        assertEquals("タタ グ-=c (1)", matches.get(0).getText());
+        matches = find(".label-success");
+        assertEquals(1, matches.size());
+        assertEquals("タタ グ-=c (1)", matches.get(0).getText());
     }
 }
