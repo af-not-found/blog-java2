@@ -2,6 +2,7 @@ package net.afnf.blog.common;
 
 import java.security.Key;
 import java.security.MessageDigest;
+import java.util.Base64;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKeyFactory;
@@ -11,10 +12,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 import net.afnf.blog.config.AppConfig;
 
-import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.security.crypto.codec.Hex;
 
 public class Crypto {
 
@@ -44,7 +44,7 @@ public class Crypto {
             System.arraycopy(iv, 0, data, 0, IV_LEN);
             System.arraycopy(encryptedBytes, 0, data, IV_LEN, dataLen - IV_LEN);
 
-            String encrypted = Base64.encodeBase64URLSafeString(data);
+            String encrypted = Base64.getUrlEncoder().encodeToString(data);
 
             return encrypted;
         }
@@ -57,7 +57,7 @@ public class Crypto {
     public static String decrypt(String encrypted) {
 
         try {
-            byte[] textBytes = Base64.decodeBase64(encrypted);
+            byte[] textBytes = Base64.getUrlDecoder().decode(encrypted);
             int textBytesLen = textBytes.length;
 
             byte[] iv = new byte[IV_LEN];
@@ -88,7 +88,7 @@ public class Crypto {
                 String cipherSeed = AppConfig.getInstance().getCipherSeed();
 
                 MessageDigest md = MessageDigest.getInstance(MD_ALGO);
-                char[] password = Hex.encodeHex(md.digest(cipherSeed.getBytes(CHARSET)));
+                char[] password = Hex.encode(md.digest(cipherSeed.getBytes(CHARSET)));
 
                 PBEKeySpec encPBESpec = new PBEKeySpec(password, salt, ITERATION_COUNT, KEN_LEN);
                 SecretKeyFactory encKeyFact = SecretKeyFactory.getInstance(TMPKEY_ALGO);

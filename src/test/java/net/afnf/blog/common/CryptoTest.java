@@ -1,9 +1,8 @@
 package net.afnf.blog.common;
 
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.not;
-import static org.hamcrest.CoreMatchers.nullValue;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 import net.afnf.blog.config.AppConfig;
 
@@ -17,20 +16,13 @@ public class CryptoTest {
         appConfig.setSalt("a");
         appConfig.setCipherSeed("b");
 
-        String encrypted, decrypted;
+        String encrypted;
 
-        encrypted = Crypto.encrypt("test");
-        assertEquals("test", Crypto.decrypt(encrypted));
+        encrypted = Crypto.encrypt("test123");
+        assertEquals("test123", Crypto.decrypt(encrypted));
 
-        encrypted += "a";
-        decrypted = Crypto.decrypt(encrypted);
-        assertThat(decrypted, not(equalTo("test")));
-        assertThat(decrypted, nullValue());
-
-        encrypted = encrypted.substring(0, encrypted.length() - 2);
-        decrypted = Crypto.decrypt(encrypted);
-        assertThat(decrypted, not(equalTo("test")));
-        assertThat(decrypted, nullValue());
+        assertNull(Crypto.decrypt(encrypted + "a"));
+        assertNull(Crypto.decrypt("b" + encrypted));
     }
 
     @Test
@@ -41,10 +33,9 @@ public class CryptoTest {
 
         String encrypted, decrypted;
 
-        encrypted = "IUP5OMMUMnjAI5VGqVJ8HD4UtzZ2q5LOpbZr51g3V1Y";
+        encrypted = "UewpfcYg-s_znsPvQPALIfsYwhuBd_y1u5rBbIA1HmI=";
         decrypted = Crypto.decrypt(encrypted);
-        assertThat(decrypted, equalTo("test"));
-        assertThat(decrypted, not(equalTo("TEST")));
+        assertThat(decrypted, equalTo("test123"));
     }
 
     @Test
