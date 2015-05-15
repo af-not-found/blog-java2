@@ -50,6 +50,15 @@ public class AfnfUtilTest {
         assertEquals("tag2", tagList.get(index++));
         assertEquals("tag3", tagList.get(index++));
         assertEquals("tag4", tagList.get(index++));
+
+        tagList = AfnfUtil.getTagList(",,,,あああ,,いい,,宇宇宇,えーーーえ, , ,     ,, お お ,宇宇宇");
+        assertEquals(5, tagList.size());
+        index = 0;
+        assertEquals("あああ", tagList.get(index++));
+        assertEquals("いい", tagList.get(index++));
+        assertEquals("宇宇宇", tagList.get(index++));
+        assertEquals("えーーーえ", tagList.get(index++));
+        assertEquals("お お", tagList.get(index++));
     }
 
     @Test
@@ -64,5 +73,6 @@ public class AfnfUtilTest {
         assertEquals("tag1, tag2, tag3", AfnfUtil.normalizegTag("tag1,,tag2,,tag3,tag3"));
         assertEquals("tag1, tag2, tag3, tag4",
                 AfnfUtil.normalizegTag(",,,,tag1,,tag2,,tag3,tag3  , , ,     ,, tag4 ,,  tag1,tag1,"));
+        assertEquals("あああ, いい, 宇宇宇, えーーーえ, お お", AfnfUtil.normalizegTag(",,,,あああ,,いい,,宇宇宇,えーーーえ, , ,     ,, お お ,宇宇宇"));
     }
 }
