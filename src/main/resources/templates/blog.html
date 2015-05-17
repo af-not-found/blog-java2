@@ -34,15 +34,15 @@
 				</div>
 
 				<div class="summary_entries_container">
-					<span th:each="entry : ${pagingList.entries}" th:include="common/entry_flagment :: entry_flagment"></span>
+					<div th:each="entry : ${pagingList.entries}" th:include="common/entry_flagment :: entry_flagment"></div>
 				</div>
-				<span th:include="common/pagination :: pagination"></span>
+				<div th:replace="common/pagination :: pagination"></div>
 			</div>
 
 			<!--/* 単一表示 */-->
 			<div th:if="${entry != null}" class="col-md-9 maindiv">
 
-				<span th:include="common/entry_flagment :: entry_flagment"></span>
+				<div th:replace="common/entry_flagment :: entry_flagment"></div>
 
 				<div class="comments_container">
 					<hr />
@@ -74,7 +74,7 @@
 		</div>
 	</div>
 
-	<span th:include="common/template :: footerdiv"></span>
+	<div th:replace="common/template :: footerdiv"></div>
 
 	<script>
 		afnfblog.ajaxSuccess = function(thisform, data) {

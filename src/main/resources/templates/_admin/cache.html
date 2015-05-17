@@ -55,7 +55,7 @@
 
 	<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
 
-	<span th:include="common/template :: footerdiv"></span>
+	<div th:replace="common/template :: footerdiv"></div>
 
 	<script>
 		$(".btn_cache").removeClass("btn-default").addClass("btn-primary");

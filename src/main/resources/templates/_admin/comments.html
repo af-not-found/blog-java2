@@ -11,7 +11,7 @@
 		<script>
 			afnfblog.pagingPath = "_admin/comments?page=";
 		</script>
-		<span th:include="common/pagination :: pagination"></span>
+		<div th:replace="common/pagination :: pagination"></div>
 
 		<hr />
 
@@ -48,12 +48,12 @@
 			</div>
 		</div>
 
-		<span th:include="common/pagination :: pagination"></span>
+		<div th:replace="common/pagination :: pagination"></div>
 	</div>
 
 	<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
 
-	<span th:include="common/template :: footerdiv"></span>
+	<div th:replace="common/template :: footerdiv"></div>
 
 	<script th:inline="javascript">
 		afnfblog.admin_comment_init();
