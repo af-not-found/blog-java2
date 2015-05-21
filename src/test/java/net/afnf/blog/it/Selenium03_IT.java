@@ -1,21 +1,30 @@
 package net.afnf.blog.it;
 
 import static org.hamcrest.Matchers.endsWith;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.startsWith;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Selenium03_IT extends SeleniumTestBase {
+
+    private static Logger logger = LoggerFactory.getLogger(Selenium03_IT.class);
 
     @Test
     public void test301_init() {
@@ -96,6 +105,36 @@ public class Selenium03_IT extends SeleniumTestBase {
     @Test
     public void test303_admin() {
 
+        wd.get(baseurl + "/_admin/entries/");
+        assertEquals(baseurl + "/_admin/entries/", wd.getCurrentUrl());
+
+        wd.findElement(By.xpath("//div[@class='btn-group']//button[.='metrics']")).click();
+
+        boolean httpsessions_active = false;
+        boolean instance_uptime = false;
+        boolean threads_peak = false;
+        boolean classes_loaded = false;
+
+        List<WebElement> elements = wd.findElements(By.cssSelector(".border_table_container tbody tr"));
+        for (WebElement element : elements) {
+            String text = element.getText();
+            logger.info(text);
+            httpsessions_active |= StringUtils.startsWith(text, "httpsessions.active");
+            instance_uptime |= StringUtils.startsWith(text, "instance.uptime");
+            threads_peak |= StringUtils.startsWith(text, "threads.peak");
+            classes_loaded |= StringUtils.startsWith(text, "classes.loaded");
+        }
+
+        assertTrue(httpsessions_active);
+        assertTrue(instance_uptime);
+        assertTrue(threads_peak);
+        assertTrue(classes_loaded);
+        assertThat(elements.size(), is(greaterThanOrEqualTo(44)));
+    }
+
+    @Test
+    public void test304_admin() {
+
         // 論理削除
         executeSql("/sql/db-logical-delete.sql");
 
@@ -118,7 +157,7 @@ public class Selenium03_IT extends SeleniumTestBase {
     }
 
     @Test
-    public void test304_user() {
+    public void test305_user() {
 
         wd.get(baseurl);
         assertElementNotFound(".summary_entry_title");
@@ -130,7 +169,7 @@ public class Selenium03_IT extends SeleniumTestBase {
     }
 
     @Test
-    public void test305_admin() {
+    public void test306_admin() {
 
         // 論理削除
         executeSql("/sql/db-truncate.sql");
@@ -154,7 +193,7 @@ public class Selenium03_IT extends SeleniumTestBase {
     }
 
     @Test
-    public void test306_user() {
+    public void test307_user() {
 
         wd.get(baseurl);
         assertElementNotFound(".summary_entry_title");
