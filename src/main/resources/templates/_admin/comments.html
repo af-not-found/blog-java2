@@ -16,7 +16,7 @@
 		<hr />
 
 		<div class="comments_container">
-			<div th:each="comment,stat : ${pagingList.comments}" th:id='${"c"+comment.id}'>
+			<div th:each="comment : ${pagingList.comments}" th:id='${"c"+comment.id}'>
 				<span th:text="${comment.name}"></span>
 				<span class="subinfo indent" f:date="${comment.postdate}">2001/2/3 04:05</span>
 
