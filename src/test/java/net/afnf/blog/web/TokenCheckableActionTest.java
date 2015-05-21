@@ -46,7 +46,6 @@ public class TokenCheckableActionTest extends SpringTestBase {
             fail();
         }
         catch (Exception e) {
-            logger.warn("1", e);
             assertTrue(e instanceof JsonResponseException);
         }
 
@@ -56,7 +55,6 @@ public class TokenCheckableActionTest extends SpringTestBase {
             fail();
         }
         catch (Exception e) {
-            logger.warn("2", e);
             assertTrue(e instanceof JsonResponseException);
         }
 
@@ -66,7 +64,6 @@ public class TokenCheckableActionTest extends SpringTestBase {
             fail();
         }
         catch (Exception e) {
-            logger.warn("3", e);
             assertTrue(e instanceof JsonResponseException);
         }
     }
