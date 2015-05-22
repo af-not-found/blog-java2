@@ -6,6 +6,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.afnf.blog.common.JsonResponseDemoSiteErrorException;
 import net.afnf.blog.common.JsonResponseException;
 
+import org.mybatis.spring.MyBatisSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
@@ -31,6 +32,7 @@ class GlobalDefaultExceptionHandler {
         String estr = "url=" + url + ", e=" + e.getClass().getName();
         boolean jsondemo = false;
         boolean jsonreq = (req != null && req.getHeader("X-Requested-With") != null) ? true : false;
+        boolean dberror = false;
 
         if (e instanceof JsonResponseDemoSiteErrorException) {
             jsondemo = true;
@@ -42,6 +44,10 @@ class GlobalDefaultExceptionHandler {
         else if (e instanceof TypeMismatchException || e instanceof BindException) {
             logger.info(estr);
         }
+        else if (e instanceof MyBatisSystemException) {
+            dberror = true;
+            logger.info(estr);
+        }
         else {
             logger.warn("url=" + url, e);
         }
@@ -50,6 +56,10 @@ class GlobalDefaultExceptionHandler {
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             res.setContentType("application/json; charset=UTF-8");
             return jsondemo ? "{\"demoSite\":true}" : "{\"error\":true}";
+        }
+        else if (dberror) {
+            res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return "db error";
         }
         else {
             res.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
