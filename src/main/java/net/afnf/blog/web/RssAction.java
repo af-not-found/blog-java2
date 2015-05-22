@@ -1,17 +1,17 @@
 package net.afnf.blog.web;
 
-import java.io.IOException;
 import java.util.List;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import net.afnf.blog.common.MyFunction;
 import net.afnf.blog.domain.Entry;
 import net.afnf.blog.service.EntryService;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,11 +23,9 @@ public class RssAction {
     private EntryService es;
 
     @RequestMapping(value = "/rss.xml")
-    public String rss(Model model, HttpServletResponse response) {
+    public ResponseEntity<String> rss(Model model, HttpServletResponse response) {
         StringBuilder sb = new StringBuilder();
 
-        response.setContentType("application/rss+xml; charset=UTF-8");
-        response.setCharacterEncoding("UTF-8");
         List<Entry> entries = es.getEntriesByTag(null, 1).getEntries();
 
         sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
@@ -49,17 +47,8 @@ public class RssAction {
         }
         sb.append("</channel></rss>");
 
-        try {
-            ServletOutputStream os = response.getOutputStream();
-            IOUtils.write(sb.toString(), os, "UTF-8");
-            os.flush();
-            IOUtils.closeQuietly(os);
-        }
-        catch (IOException e) {
-            // do nothing
-        }
-
-        return null;
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("content-type", "application/rss+xml; charset=UTF-8");
+        return new ResponseEntity<String>(sb.toString(), headers, HttpStatus.OK);
     }
-
 }
