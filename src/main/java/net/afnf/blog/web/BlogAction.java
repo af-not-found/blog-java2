@@ -99,7 +99,7 @@ public class BlogAction extends TokenCheckableAction {
         return "blog";
     }
 
-    @RequestMapping(value = "/{entryid}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{entryid:[0-9]+}", method = RequestMethod.GET)
     public String single(@PathVariable Integer entryid, Model model) {
 
         Entry entry = es.getEntry(entryid);
@@ -120,7 +120,7 @@ public class BlogAction extends TokenCheckableAction {
         return "blog";
     }
 
-    @RequestMapping(value = "/{entryid}", params = "post", method = RequestMethod.POST)
+    @RequestMapping(value = "/{entryid:[0-9]+}", params = "post", method = RequestMethod.POST)
     @ResponseBody
     public String postComment(@PathVariable Integer entryid, @ModelAttribute("comment") @Valid Comment comment) {
         checkToken();
