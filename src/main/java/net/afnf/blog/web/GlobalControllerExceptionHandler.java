@@ -41,9 +41,11 @@ class GlobalDefaultExceptionHandler {
         else if (e instanceof JsonResponseException) {
             logger.warn(estr);
         }
+        // path variableの型不一致、Validationエラー
         else if (e instanceof TypeMismatchException || e instanceof BindException) {
             logger.info(estr);
         }
+        // DB障害
         else if (e instanceof MyBatisSystemException) {
             dberror = true;
             logger.info(estr);
