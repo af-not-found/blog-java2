@@ -7,8 +7,8 @@
 
 # Source function library.
 [ -f "/etc/rc.d/init.d/functions" ] && . /etc/rc.d/init.d/functions
-[ -z "$JAVA_HOME" -a -x /etc/profile.d/java.sh ] && . /etc/profile.d/java.sh
 
+export JAVA_HOME=/usr/java/latest
 
 # the name of the project, will also be used for the war file, log file, ...
 export PROJECT_NAME=blog-java2
