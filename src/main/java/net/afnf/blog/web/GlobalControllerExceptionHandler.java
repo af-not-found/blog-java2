@@ -54,10 +54,15 @@ class GlobalDefaultExceptionHandler {
             logger.warn("url=" + url, e);
         }
 
-        if (jsondemo || jsonreq) {
+        if (jsondemo) {
+            res.setStatus(HttpServletResponse.SC_OK);
+            res.setContentType("application/json; charset=UTF-8");
+            return "{\"demoSite\":true}";
+        }
+        else if (jsonreq) {
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             res.setContentType("application/json; charset=UTF-8");
-            return jsondemo ? "{\"demoSite\":true}" : "{\"error\":true}";
+            return "{\"error\":true}";
         }
         else if (dberror) {
             res.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
