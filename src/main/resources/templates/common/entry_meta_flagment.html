@@ -18,9 +18,9 @@
 
 		<span th:if="${isAdminPage == false and isProductionAndNormalSite == true}" class="indent_short">
 			<a href="http://b.hatena.ne.jp/entry/http://blog.afnf.net/blog/9999"
-				th:href="http://b.hatena.ne.jp/entry/http://blog.afnf.net/blog/{id}(id=${entry.id})">
+				th:href="@{http://b.hatena.ne.jp/entry/http://blog.afnf.net/blog/{id}(id=${entry.id})}">
 				<img src="http://b.hatena.ne.jp/entry/image/http://blog.afnf.net/blog/9999"
-					th:src="http://b.hatena.ne.jp/entry/image/http://blog.afnf.net/blog/{id}(id=${entry.id})" height="13px" />
+					th:src="@{http://b.hatena.ne.jp/entry/image/http://blog.afnf.net/blog/{id}(id=${entry.id})}" height="13px" />
 			</a>
 		</span>
 
