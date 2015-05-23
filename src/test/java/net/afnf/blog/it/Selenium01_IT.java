@@ -451,7 +451,7 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.findElement(By.id("tags")).sendKeys("\\9");
         wd.findElement(By.id("tags")).click();
         wd.findElement(By.id("tags")).clear();
-        wd.findElement(By.id("tags")).sendKeys("tag1, tag3, タグa, タグb, タタ グ-=c");
+        wd.findElement(By.id("tags")).sendKeys("tag1, tag3, タグa, タグb, タタ グ-=c, たぐd.json, tag-e.xml, 択f.html");
         wd.findElement(By.id("r1")).click(); // normal
 
         wd.findElement(By.cssSelector("span.md_element")).click();
@@ -464,7 +464,7 @@ public class Selenium01_IT extends SeleniumTestBase {
         waitForCacheUpdate();
 
         assertEquals("3", wd.findElement(By.className("totalNormalCount")).getText());
-        assertEquals("6", wd.findElement(By.className("tagCount")).getText());
+        assertEquals("9", wd.findElement(By.className("tagCount")).getText());
         assertEquals("1", wd.findElement(By.className("monthCount")).getText());
     }
 
@@ -474,14 +474,7 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.get(baseurl);
         assertEquals(3, find(".summary_entry_title").size());
         assertEquals(3, find(".sb_entry_title").size());
-        assertEquals(6, find(".sb_tag").size());
         assertEquals(1, find(".sb_month").size());
-
-        List<WebElement> tags = find(".sb_tag");
-        assertEquals("tag1 (3)", tags.get(0).getText());
-        assertEquals("tag3 (3)", tags.get(1).getText());
-        assertEquals("タグa (2)", tags.get(2).getText());
-        assertEquals(6, tags.size());
 
         List<WebElement> cmcount = find(".cmcount");
         assertThat(cmcount.get(0).getText(), endsWith("(1)"));
@@ -531,13 +524,43 @@ public class Selenium01_IT extends SeleniumTestBase {
         assertThat(cmcount.get(1).getText(), endsWith("(1)"));
         assertThat(cmcount.get(2).getText(), endsWith("(5)"));
         assertEquals(3, cmcount.size());
+    }
 
-        wd.findElement(By.linkText("タタ グ-=c")).click();
-        List<WebElement> matches = find(".sb_matched");
-        assertEquals(1, matches.size());
-        assertEquals("タタ グ-=c (1)", matches.get(0).getText());
-        matches = find(".label-success");
-        assertEquals(1, matches.size());
-        assertEquals("タタ グ-=c (1)", matches.get(0).getText());
+    @Test
+    public void test113_user() {
+
+        String[] expectedTags = {
+                "tag1 (3)",
+                "tag3 (3)",
+                "タグa (2)",
+                "tag-e.xml (1)",
+                "tag2 (1)",
+                "たぐd.json (1)",
+                "タグb (1)",
+                "タタ グ-=c (1)",
+                "択f.html (1)" };
+
+        wd.get(baseurl);
+
+        List<WebElement> tags = find(".sb_tag");
+        assertEquals(expectedTags.length, tags.size());
+        for (int i = 0; i < expectedTags.length; i++) {
+            assertEquals(expectedTags[i], tags.get(i).getText());
+        }
+
+        for (int i = 0; i < expectedTags.length; i++) {
+            String tagName = StringUtils.substringBefore(expectedTags[i], " (");
+            int entryCount = Integer.parseInt(StringUtils.substringBetween(expectedTags[i], " (", ")"));
+
+            wd.findElement(By.linkText(tagName)).click();
+            List<WebElement> matches = find(".sb_matched");
+            assertEquals("tagName=" + tagName, 1, matches.size());
+            assertEquals("tagName=" + tagName, expectedTags[i], matches.get(0).getText());
+            matches = find(".label-success");
+            assertEquals("tagName=" + tagName, 1, matches.size());
+            assertEquals("tagName=" + tagName, expectedTags[i], matches.get(0).getText());
+
+            assertEquals("tagName=" + tagName, entryCount, find(".summary_entry_title").size());
+        }
     }
 }

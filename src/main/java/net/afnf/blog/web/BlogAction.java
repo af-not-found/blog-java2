@@ -19,6 +19,8 @@ import net.afnf.blog.service.EntryService;
 import net.afnf.blog.service.EntryService.EntryState;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +33,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @Controller
 public class BlogAction extends TokenCheckableAction {
+
+    private static Logger logger = LoggerFactory.getLogger(BlogAction.class);
 
     @Autowired
     private EntryService es;
@@ -60,6 +64,7 @@ public class BlogAction extends TokenCheckableAction {
                 }
             }
             if (found == false) {
+                logger.info("invalid tag : " + tag);
                 return "redirect:/";
             }
         }
