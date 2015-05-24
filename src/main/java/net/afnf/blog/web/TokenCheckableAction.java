@@ -25,16 +25,29 @@ public abstract class TokenCheckableAction {
             throw new JsonResponseDemoSiteErrorException();
         }
 
-        if (StringUtils.equalsIgnoreCase(request.getMethod(), "POST")) {
-            if (StringUtils.equalsIgnoreCase(request.getHeader("X-Requested-With"), "XMLHttpRequest")) {
+        String errorMsg = null;
+
+        if (StringUtils.equalsIgnoreCase(request.getMethod(), "post") == false) {
+            errorMsg = "checkToken : not POST method";
+        }
+        else {
+            if (StringUtils.equalsIgnoreCase(request.getHeader("X-Requested-With"), "XMLHttpRequest") == false) {
+                errorMsg = "checkToken : not Ajax";
+            }
+            else {
                 String token = request.getHeader("X-FORM-TOKEN");
-                if (TokenService.validateToken(token)) {
-                    return;
+                if (token == null) {
+                    errorMsg = "checkToken : null token";
+                }
+                else if (TokenService.validateToken(token) == false) {
+                    errorMsg = "checkToken : invalid token";
                 }
             }
         }
 
-        throw new JsonResponseException();
+        if (errorMsg != null) {
+            throw new JsonResponseException(errorMsg);
+        }
     }
 
     protected String getClientInfo() {

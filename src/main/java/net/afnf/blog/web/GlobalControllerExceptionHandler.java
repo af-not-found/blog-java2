@@ -29,7 +29,7 @@ class GlobalDefaultExceptionHandler {
     public String defaultErrorHandler(HttpServletRequest req, HttpServletResponse res, Exception e) throws Exception {
 
         String url = req != null ? req.getRequestURI() : "";
-        String estr = "url=" + url + ", e=" + e.getClass().getName();
+        String estr = "url=" + url + ", e=" + e.toString();
         boolean jsondemo = false;
         boolean jsonreq = (req != null && req.getHeader("X-Requested-With") != null) ? true : false;
         boolean dberror = false;
