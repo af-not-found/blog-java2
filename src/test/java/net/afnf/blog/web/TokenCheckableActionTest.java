@@ -9,13 +9,9 @@ import net.afnf.blog.common.JsonResponseException;
 import net.afnf.blog.config.AppConfig;
 
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 
 public class TokenCheckableActionTest extends SpringTestBase {
-
-    private static Logger logger = LoggerFactory.getLogger(TokenCheckableActionTest.class);
 
     @Test
     public void testCheckToken1() {
