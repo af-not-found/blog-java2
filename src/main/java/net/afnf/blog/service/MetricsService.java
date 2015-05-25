@@ -15,12 +15,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class MetricsService {
 
-    private final Collection<PublicMetrics> publicMetrics;
-
     @Autowired
-    public MetricsService(Collection<PublicMetrics> publicMetrics) {
-        this.publicMetrics = publicMetrics;
-    }
+    private Collection<PublicMetrics> publicMetrics;
 
     public List<Pair<String, String>> getMetricsList() {
 
