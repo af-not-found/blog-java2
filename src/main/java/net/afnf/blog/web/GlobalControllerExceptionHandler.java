@@ -30,30 +30,33 @@ class GlobalDefaultExceptionHandler {
     public String defaultErrorHandler(HttpServletRequest req, HttpServletResponse res, Exception e) throws Exception {
 
         String url = req != null ? req.getRequestURI() : "";
-        String estr = "url=" + url + ", e=" + e.toString();
+
+        String estr_short = "ip=" + req.getRemoteAddr() + ", url=" + url;
+        String estr_long = estr_short + ", e=" + e.toString();
+
         boolean jsondemo = false;
         boolean jsonreq = (req != null && req.getHeader("X-Requested-With") != null) ? true : false;
         boolean dberror = false;
 
         if (e instanceof JsonResponseDemoSiteErrorException) {
             jsondemo = true;
-            logger.debug(estr);
+            logger.debug(estr_long);
         }
         else if (e instanceof JsonResponseException) {
-            logger.warn(estr);
+            logger.warn(estr_long);
         }
         // path variableの型不一致、Validationエラー、意図しないパラメータ（脆弱性を狙った攻撃）
         else if (e instanceof TypeMismatchException || e instanceof BindException
                 || e instanceof UnsatisfiedServletRequestParameterException) {
-            logger.info(estr);
+            logger.info(estr_long);
         }
         // DB障害
         else if (e instanceof MyBatisSystemException) {
             dberror = true;
-            logger.info(estr);
+            logger.info(estr_long);
         }
         else {
-            logger.warn("url=" + url, e);
+            logger.warn(estr_short, e);
         }
 
         if (jsondemo) {
