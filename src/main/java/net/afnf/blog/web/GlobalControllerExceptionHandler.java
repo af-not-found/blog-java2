@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.BindException;
+import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -41,8 +42,9 @@ class GlobalDefaultExceptionHandler {
         else if (e instanceof JsonResponseException) {
             logger.warn(estr);
         }
-        // path variableの型不一致、Validationエラー
-        else if (e instanceof TypeMismatchException || e instanceof BindException) {
+        // path variableの型不一致、Validationエラー、意図しないパラメータ（脆弱性を狙った攻撃）
+        else if (e instanceof TypeMismatchException || e instanceof BindException
+                || e instanceof UnsatisfiedServletRequestParameterException) {
             logger.info(estr);
         }
         // DB障害
