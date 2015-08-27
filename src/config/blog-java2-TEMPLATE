@@ -12,6 +12,8 @@ export JAVA_HOME=/usr/java/latest
 
 # the name of the project, will also be used for the war file, log file, ...
 export PROJECT_NAME=blog-java2
+# the ID of the project
+export PROJECT_ID=blog-java2-MYPROF-MYPORT
 # the user which should run the service
 SERVICE_USER=bj2user
 # base directory for the spring boot jar
@@ -21,18 +23,18 @@ export SPRINGBOOTAPP_JAR="$SPRINGBOOTAPP_HOME/$PROJECT_NAME.jar"
 # java executable for spring boot app, change if you have multiple jdks installed
 export SPRINGBOOTAPP_JAVA=$JAVA_HOME/bin/java
 # java or spring boot options
-export JAVA_OPT="-Dspring.profiles.active=MYPROF -Xmx280M -Xss256k -Djava.security.egd=file:/dev/./urandom -Dspring.config.location=/home/bj2user/secret.properties"
+export JAVA_OPT="-Dserver.port=MYPORT -Dspring.profiles.active=MYPROF -Xmx220M -Xss256k -Djava.security.egd=file:/dev/./urandom -Dspring.config.location=/home/bj2user/secret.properties"
 # spring boot pid-file
-export PIDFILE=/var/run/$PROJECT_NAME/$PROJECT_NAME.MYPROF.pid
+export PIDFILE=/var/run/$PROJECT_NAME/$PROJECT_ID.pid
 # killproc wait [sec]
 KILL_WAIT_SEC=15
 
 RETVAL=0
 
 start() {
-    [ -f "$PIDFILE" ] && echo "$PROJECT_NAME is already started" && return 0
+    [ -f "$PIDFILE" ] && echo "$PROJECT_ID is already started" && return 0
     
-    echo -n $"Starting $PROJECT_NAME: "
+    echo -n $"Starting $PROJECT_ID: "
 
     # turn off history substitution
     set +H
@@ -50,11 +52,11 @@ start() {
 }
 
 stop() {
-    [ ! -f "$PIDFILE" ] && echo "$PROJECT_NAME is already stopped" && return 0
+    [ ! -f "$PIDFILE" ] && echo "$PROJECT_ID is already stopped" && return 0
 
-    echo -n $"Stopping $PROJECT_NAME: "
+    echo -n $"Stopping $PROJECT_ID: "
 
-    killproc -p "$PIDFILE" -d $KILL_WAIT_SEC "$PROJECT_NAME"
+    killproc -p "$PIDFILE" -d $KILL_WAIT_SEC "$PROJECT_ID"
     RETVAL=$?
     echo
 }
@@ -63,14 +65,14 @@ status() {
     if [ -f "$PIDFILE" ]; then 
         pid=`cat "$PIDFILE"`
         if checkpid $pid; then
-            echo "$PROJECT_NAME (pid $pid) is running..."
+            echo "$PROJECT_ID (pid $pid) is running..."
             return 0
         else
-            echo "$PROJECT_NAME is dead and pid file ($PIDFILE) exists"
+            echo "$PROJECT_ID is dead and pid file ($PIDFILE) exists"
             return 2
         fi
     fi
-    echo "$PROJECT_NAME is stopped"
+    echo "$PROJECT_ID is stopped"
     return 3
 }
 
