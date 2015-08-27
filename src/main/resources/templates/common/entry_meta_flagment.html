@@ -16,14 +16,6 @@
 			<a th:each="tag : ${entry.tagList}" href='/t/tagname' th:href='@{/t/{tag}(tag=${tag})}' th:text="${tag}">tagName</a>
 		</span>
 
-		<span th:if="${isAdminPage == false and isProductionAndNormalSite == true}" class="indent_short">
-			<a href="http://b.hatena.ne.jp/entry/http://blog.afnf.net/blog/9999"
-				th:href="@{http://b.hatena.ne.jp/entry/http://blog.afnf.net/blog/{id}(id=${entry.id})}">
-				<img src="http://b.hatena.ne.jp/entry/image/http://blog.afnf.net/blog/9999"
-					th:src="@{http://b.hatena.ne.jp/entry/image/http://blog.afnf.net/blog/{id}(id=${entry.id})}" height="13px" />
-			</a>
-		</span>
-
 		<span class="indent_short subinfo" f:date="${entry.postdate}">2001/2/3 04:05</span>
 	</div>
 

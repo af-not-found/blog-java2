@@ -7,17 +7,6 @@ import java.util.Locale;
 
 import javax.validation.Valid;
 
-import net.afnf.blog.bean.EntryList;
-import net.afnf.blog.bean.NameCountPair;
-import net.afnf.blog.common.SmtpManager;
-import net.afnf.blog.config.AppConfig;
-import net.afnf.blog.domain.Comment;
-import net.afnf.blog.domain.Entry;
-import net.afnf.blog.service.CommentService;
-import net.afnf.blog.service.CommentService.CommentState;
-import net.afnf.blog.service.EntryService;
-import net.afnf.blog.service.EntryService.EntryState;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -30,6 +19,17 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import net.afnf.blog.bean.EntryList;
+import net.afnf.blog.bean.NameCountPair;
+import net.afnf.blog.common.SmtpManager;
+import net.afnf.blog.config.AppConfig;
+import net.afnf.blog.domain.Comment;
+import net.afnf.blog.domain.Entry;
+import net.afnf.blog.service.CommentService;
+import net.afnf.blog.service.CommentService.CommentState;
+import net.afnf.blog.service.EntryService;
+import net.afnf.blog.service.EntryService.EntryState;
 
 @Controller
 public class BlogAction extends TokenCheckableAction {
@@ -154,7 +154,7 @@ public class BlogAction extends TokenCheckableAction {
     protected void setCommonAttribute(Model model, boolean isSummaryPage) {
         model.addAttribute("isAdminPage", false);
         model.addAttribute("isSummaryPage", isSummaryPage);
-        model.addAttribute("isProductionAndNormalSite", AppConfig.getInstance().isProductionAndNormalSite());
+        model.addAttribute("isTestSite", AppConfig.getInstance().isTestSite());
         model.addAttribute("entryCache", es.getEntryCache());
     }
 
