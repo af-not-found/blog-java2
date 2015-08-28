@@ -50,9 +50,6 @@
 	</div>
 
 	<div th:if="${entry == null or entry.id == null}" class="container admindiv">
-		<script>
-			afnfblog.pagingPath = "_admin/entries?page=";
-		</script>
 		<div th:replace="common/pagination :: pagination"></div>
 
 		<div class="summary_entries_container">
@@ -61,14 +58,12 @@
 
 		<div th:replace="common/pagination :: pagination"></div>
 	</div>
-
-	<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
-
+	
 	<div th:replace="common/template :: footerdiv"></div>
 
 	<script th:inline="javascript">
-		var btn_selector = /*[[${entry != null and entry.id == -1 ? ".btn_new" : ".btn_entries"}]]*/"";
-		afnfblog.admin_entry_init(btn_selector);
+		afnfblog.pagenator( "_admin/entries?page=" );
+		afnfblog.admin_entry_init(/*[[${entry != null and entry.id == -1 ? ".btn_new" : ".btn_entries"}]]*/"");
 	</script>
 
 </body>

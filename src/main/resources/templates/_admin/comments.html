@@ -8,9 +8,6 @@
 	<div th:replace="common/admin_menu :: admin_menu"></div>
 
 	<div class="container admindiv">
-		<script>
-			afnfblog.pagingPath = "_admin/comments?page=";
-		</script>
 		<div th:replace="common/pagination :: pagination"></div>
 
 		<hr />
@@ -51,11 +48,10 @@
 		<div th:replace="common/pagination :: pagination"></div>
 	</div>
 
-	<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
-
 	<div th:replace="common/template :: footerdiv"></div>
 
 	<script th:inline="javascript">
+		afnfblog.pagenator( "_admin/comments?page=" );
 		afnfblog.admin_comment_init();
 	</script>
 
