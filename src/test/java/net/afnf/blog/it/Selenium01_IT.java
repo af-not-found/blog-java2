@@ -9,9 +9,6 @@ import static org.junit.Assert.assertThat;
 
 import java.util.List;
 
-import net.afnf.blog.common.Crypto;
-import net.afnf.blog.service.TokenService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -21,6 +18,9 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.afnf.blog.common.Crypto;
+import net.afnf.blog.service.TokenService;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Selenium01_IT extends SeleniumTestBase {
@@ -73,7 +73,6 @@ public class Selenium01_IT extends SeleniumTestBase {
         // キャッシュ更新
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForCacheUpdate();
 
         assertEquals("0", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("0", wd.findElement(By.className("tagCount")).getText());
@@ -115,9 +114,8 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.findElement(By.id("tags")).sendKeys("tag1,tag2,tag3");
         wd.findElement(By.id("content")).click();
         wd.findElement(By.id("content")).clear();
-        wd.findElement(By.id("content"))
-                .sendKeys(
-                        "#てすと123\nabc\n\n#code\n````\nif(1==1){\n    alert(1)\n}\n````\n\n#point\n1. aaega\n1. 433\n1. 4343\n 1. 224\n 1. あああ");
+        wd.findElement(By.id("content")).sendKeys(
+                "#てすと123\nabc\n\n#code\n````\nif(1==1){\n    alert(1)\n}\n````\n\n#point\n1. aaega\n1. 433\n1. 4343\n 1. 224\n 1. あああ");
         postAndWait();
         assertAjaxRet(".ajaxform");
         assertEquals("1", find("#id").get(0).getAttribute("value"));
@@ -146,9 +144,8 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.findElement(By.id("title")).sendKeys("blog1234");
         wd.findElement(By.id("content")).click();
         wd.findElement(By.id("content")).clear();
-        wd.findElement(By.id("content"))
-                .sendKeys(
-                        "#てすと123\nabc\n\n#code\n````\nif(1==1){\n    alert(1)\n}\n````\n\n#point\n1. aaega\n1. 433\n1. 4343\n 1. 224\n 1. あああ\n 1. bbb");
+        wd.findElement(By.id("content")).sendKeys(
+                "#てすと123\nabc\n\n#code\n````\nif(1==1){\n    alert(1)\n}\n````\n\n#point\n1. aaega\n1. 433\n1. 4343\n 1. 224\n 1. あああ\n 1. bbb");
         wd.findElement(By.id("r1")).click(); // normal
         postAndWait();
         assertAjaxRet(".ajaxform");
@@ -281,8 +278,8 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.findElement(By.id("name")).sendKeys("test2\nbbbbb<script>location.href='/a';</script>");
         wd.findElement(By.id("content")).click();
         wd.findElement(By.id("content")).clear();
-        wd.findElement(By.id("content")).sendKeys(
-                "aaaaaaaabbbbbbbbbbbbb\n ああああああ<script>location.href='/b';</script>ああああaaa\"aa\n<b>aaa</b>");
+        wd.findElement(By.id("content"))
+                .sendKeys("aaaaaaaabbbbbbbbbbbbb\n ああああああ<script>location.href='/b';</script>ああああaaa\"aa\n<b>aaa</b>");
         postAndCloseModal();
 
         assertEquals(4, find(".comments_container .comment").size());
@@ -353,7 +350,6 @@ public class Selenium01_IT extends SeleniumTestBase {
         assertElementNotFound(".comments_container .normal_comment");
         assertElementNotFound(".comments_container .deleted_comment");
         wd.findElement(By.id("c2_r1")).click();
-        waitForLoaded();
         assertAjaxRet("#c2");
 
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='comments']")).click();
@@ -362,7 +358,6 @@ public class Selenium01_IT extends SeleniumTestBase {
         assertEquals(1, find(".comments_container .normal_comment").size());
         assertElementNotFound(".comments_container .deleted_comment");
         wd.findElement(By.id("c3_r2")).click();
-        waitForLoaded();
         assertAjaxRet("#c3");
 
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='comments']")).click();
@@ -408,8 +403,8 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.findElement(By.id("name")).sendKeys("ああああああああああああ");
         wd.findElement(By.id("content")).click();
         wd.findElement(By.id("content")).clear();
-        wd.findElement(By.id("content")).sendKeys(
-                "aaaaaaaabbbbbbbbbbbbb\n ああああああああああaaaaa\n<b>aaa</b>jfdytr\n\n\n\ni7tfjyg\n\n\nfj75rfjytft");
+        wd.findElement(By.id("content"))
+                .sendKeys("aaaaaaaabbbbbbbbbbbbb\n ああああああああああaaaaa\n<b>aaa</b>jfdytr\n\n\n\ni7tfjyg\n\n\nfj75rfjytft");
         postAndCloseModal();
 
         assertEquals(1, find(".comments_container .comment").size());
@@ -441,9 +436,8 @@ public class Selenium01_IT extends SeleniumTestBase {
         wd.findElement(By.id("title")).click();
         wd.findElement(By.id("content")).click();
         wd.findElement(By.id("content")).clear();
-        wd.findElement(By.id("content"))
-                .sendKeys(
-                        "#Markdownのテスト1234\n てすとてすとてすとて **すとてすとてす** とてすとてすとてすと。\nてすと```てすとてすとてすとてすと```てすとてすとてす _とてすとてすとてす_ とてすとてすと。\naaaalongaaaalogaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaa\n<br/><br/>aa3a<span style=\"color:red\" class=\"md_element\">e3a4</span>3aa\n\n#テーブル1224\n1|2 |3\n---|---|---\na|b|c\nxxxxxxx|yyyyyyyy|zzzzzz*long* **longlong**\n\n\n# 複数行の整形済テキスト\n````\nclass HelloWorld {\n  public static void main() {\n    int i = 1;\n    System.out.println(\"Hello, World! : \" + i);\n  }\n}\n````\n\n## PHPでhello world\n````\n<?php\n  echo \"Hello, World!\\n\";\n?>\n````\n\n\n## 順序\n1. a1\n1. 順序付きリストのアイテム\n 1. 子供1\n 1. 子供1\n1. 順序付きリストの別のアイテム\n  \n\n### リスト\n* aa\n * [抗酸化物質](//ja.wikipedia.org/wiki/%E6%8A%97%E9%85%B8%E5%8C%96%E7%89%A9%E8%B3%AA)\n * cc\n* e\n\n\n#### リンク\n* [ローカルホスト2](http://localhost)\n* [ローカルホスト1](http://localhost)\n* ![alt](//upload.wikimedia.org/wikipedia/commons/a/ad/Wikipedia-logo-v2-ja.png)");
+        wd.findElement(By.id("content")).sendKeys(
+                "#Markdownのテスト1234\n てすとてすとてすとて **すとてすとてす** とてすとてすとてすと。\nてすと```てすとてすとてすとてすと```てすとてすとてす _とてすとてすとてす_ とてすとてすと。\naaaalongaaaalogaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaa\n<br/><br/>aa3a<span style=\"color:red\" class=\"md_element\">e3a4</span>3aa\n\n#テーブル1224\n1|2 |3\n---|---|---\na|b|c\nxxxxxxx|yyyyyyyy|zzzzzz*long* **longlong**\n\n\n# 複数行の整形済テキスト\n````\nclass HelloWorld {\n  public static void main() {\n    int i = 1;\n    System.out.println(\"Hello, World! : \" + i);\n  }\n}\n````\n\n## PHPでhello world\n````\n<?php\n  echo \"Hello, World!\\n\";\n?>\n````\n\n\n## 順序\n1. a1\n1. 順序付きリストのアイテム\n 1. 子供1\n 1. 子供1\n1. 順序付きリストの別のアイテム\n  \n\n### リスト\n* aa\n * [抗酸化物質](//ja.wikipedia.org/wiki/%E6%8A%97%E9%85%B8%E5%8C%96%E7%89%A9%E8%B3%AA)\n * cc\n* e\n\n\n#### リンク\n* [ローカルホスト2](http://localhost)\n* [ローカルホスト1](http://localhost)\n* ![alt](//upload.wikimedia.org/wikipedia/commons/a/ad/Wikipedia-logo-v2-ja.png)");
         wd.findElement(By.id("title")).click();
         wd.findElement(By.id("title")).clear();
         wd.findElement(By.id("title")).sendKeys("Markdownのテスト1234");
@@ -461,7 +455,6 @@ public class Selenium01_IT extends SeleniumTestBase {
 
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForCacheUpdate();
 
         assertEquals("3", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("9", wd.findElement(By.className("tagCount")).getText());

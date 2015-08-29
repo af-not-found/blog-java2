@@ -11,14 +11,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import net.afnf.blog.service.EntryService;
-
 import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
+
+import net.afnf.blog.service.EntryService;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Selenium02_IT extends SeleniumTestBase {
@@ -42,7 +42,6 @@ public class Selenium02_IT extends SeleniumTestBase {
         // キャッシュ更新
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForCacheUpdate();
 
         assertEquals("10004", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("18", wd.findElement(By.className("tagCount")).getText());
@@ -53,8 +52,7 @@ public class Selenium02_IT extends SeleniumTestBase {
     public void test202_user() {
 
         wd.get(baseurl);
-        assertEquals(
-                "Markdownのテスト1234789\ntitle10000\ntitle9999\ntitle9998\ntitle9997\ntitle9996\ntitle9995\ntitle9994\nmore...",
+        assertEquals("Markdownのテスト1234789\ntitle10000\ntitle9999\ntitle9998\ntitle9997\ntitle9996\ntitle9995\ntitle9994\nmore...",
                 find(".sb_recents").get(0).getText());
 
         wd.findElement(By.cssSelector("div.col-md-9.maindiv")).click();
@@ -179,7 +177,6 @@ public class Selenium02_IT extends SeleniumTestBase {
         wd.findElement(By.id("c677_r1")).click();
         wd.findElement(By.id("c676_r1")).click();
         wd.findElement(By.id("c676_r2")).click();
-        waitForLoaded();
 
         wd.findElement(By.linkText("18")).click();
         wd.findElement(By.id("c662_r1")).click();
@@ -189,7 +186,6 @@ public class Selenium02_IT extends SeleniumTestBase {
         wd.findElement(By.id("c654_r1")).click();
         wd.findElement(By.id("c653_r1")).click();
         wd.findElement(By.id("c651_r2")).click();
-        waitForLoaded();
 
         wd.findElement(By.linkText("22")).click();
         wd.findElement(By.linkText("25")).click();
@@ -382,8 +378,7 @@ public class Selenium02_IT extends SeleniumTestBase {
     public void test208_user() {
 
         wd.get(baseurl);
-        assertEquals(
-                "Markdownのテスト1234789\ntitle10000\ntitle9998\ntitle9996\ntitle9995\ntitle9994\ntitle9993\ntitle9992\nmore...",
+        assertEquals("Markdownのテスト1234789\ntitle10000\ntitle9998\ntitle9996\ntitle9995\ntitle9994\ntitle9993\ntitle9992\nmore...",
                 find(".sb_recents").get(0).getText());
     }
 

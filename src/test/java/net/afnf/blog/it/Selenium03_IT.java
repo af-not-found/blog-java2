@@ -47,7 +47,6 @@ public class Selenium03_IT extends SeleniumTestBase {
         // キャッシュ更新
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='cache']")).click();
         wd.findElement(By.name("update")).click();
-        waitForCacheUpdate();
 
         assertEquals("10004", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("18", wd.findElement(By.className("tagCount")).getText());
@@ -58,8 +57,7 @@ public class Selenium03_IT extends SeleniumTestBase {
     public void test302_user() {
 
         wd.get(baseurl);
-        assertEquals(
-                "Markdownのテスト1234789\ntitle10000\ntitle9999\ntitle9998\ntitle9997\ntitle9996\ntitle9995\ntitle9994\nmore...",
+        assertEquals("Markdownのテスト1234789\ntitle10000\ntitle9999\ntitle9998\ntitle9997\ntitle9996\ntitle9995\ntitle9994\nmore...",
                 find(".sb_recents").get(0).getText());
 
         wd.get(baseurl + "/m/201003");
@@ -149,7 +147,6 @@ public class Selenium03_IT extends SeleniumTestBase {
 
         // キャッシュ更新
         wd.findElement(By.name("update")).click();
-        waitForLoaded();
 
         assertEquals("0", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("0", wd.findElement(By.className("tagCount")).getText());
@@ -185,7 +182,6 @@ public class Selenium03_IT extends SeleniumTestBase {
 
         // キャッシュ更新
         wd.findElement(By.name("update")).click();
-        waitForLoaded();
 
         assertEquals("0", wd.findElement(By.className("totalNormalCount")).getText());
         assertEquals("0", wd.findElement(By.className("tagCount")).getText());
