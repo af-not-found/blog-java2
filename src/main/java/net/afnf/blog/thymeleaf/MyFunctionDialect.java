@@ -25,7 +25,6 @@ import org.thymeleaf.util.EvaluationUtil;
 
 import net.afnf.blog.common.AssetsFunction;
 import net.afnf.blog.common.MyFunction;
-import net.afnf.blog.config.AppConfig;
 import net.afnf.blog.thymeleaf.processor.ProcessorUtil;
 import net.afnf.blog.thymeleaf.processor.TextProcessor;
 import net.afnf.blog.thymeleaf.processor.UTextProcessor;
@@ -159,16 +158,6 @@ class IfProcessor extends AbstractConditionalVisibilityAttrProcessor {
                 boolean val = StringUtils.indexOf(httpServletRequest.getRequestURI(), "/_admin/") != -1;
                 attributeValue = StringUtils.replace(attributeValue, "isAdminPage", Boolean.toString(val));
             }
-        }
-
-        if (StringUtils.indexOf(attributeValue, "isProductionAndNormalSite") != -1) {
-            boolean val = AppConfig.getInstance().isProductionAndNormalSite();
-            attributeValue = StringUtils.replace(attributeValue, "isProductionAndNormalSite", Boolean.toString(val));
-        }
-
-        if (StringUtils.indexOf(attributeValue, "isTestSite") != -1) {
-            boolean val = AppConfig.getInstance().isTestSite();
-            attributeValue = StringUtils.replace(attributeValue, "isTestSite", Boolean.toString(val));
         }
 
         final Configuration configuration = arguments.getConfiguration();

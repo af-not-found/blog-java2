@@ -34,7 +34,7 @@
 
 		<div th:replace="common/entry_meta_flagment :: entry_meta_flagment"></div>
 		
-		<div class="social_btn_container" f:if="${isTestSite == false}" >
+		<div class="social_btn_container" th:if="${#conf.isTestSite() == false}" >
 		<ul>
 			<li>
 				<a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="simple-balloon" title="このエントリーをはてなブックマークに追加">
