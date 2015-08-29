@@ -7,7 +7,7 @@
 
 	<div class="text-right" th:fragment="entry_meta_flagment">
 
-		<span th:if="${isAdminPage == true and isSummaryPage == true}">
+		<span f:if="${isAdminPage == true and isSummaryPage == true}">
 			<span th:if="${entry.state == 0}" class="state_draft">draft</span>
 			<span th:if="${entry.state == 2}" class="state_deleted">deleted</span>
 		</span>

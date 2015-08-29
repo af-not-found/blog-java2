@@ -7,16 +7,16 @@
 
 	<!--/* 一覧表示 */-->
 	<div th:if="${isSummaryPage == true}" class="summary_entry_container">
-		<h3 class="summary_entry_title" th:if="${isAdminPage == false}">
+		<h3 class="summary_entry_title" f:if="${isAdminPage == false}">
 			<a href="/99999" th:href="@{/{id}(id=${entry.id})}" th:text="${entry.title}">title</a>
 		</h3>
-		<h3 class="summary_entry_title" th:if="${isAdminPage == true}">
+		<h3 class="summary_entry_title" f:if="${isAdminPage == true}">
 			<a href="/99999" th:href="@{/_admin/entries/{id}(id=${entry.id})}" th:text="${entry.title}">title</a>
 		</h3>
 
 		<div th:replace="common/entry_meta_flagment :: entry_meta_flagment"></div>
 
-		<div th:if="${isAdminPage == false and entry.commentCount > 0}" class="text-right subinfo cmcount">
+		<div f:if="${isAdminPage == false and entry.commentCount > 0}" class="text-right subinfo cmcount">
 			<span data-t="blog.comments">comments</span>
 			(<span th:text="${entry.commentCount}">999999</span>)
 		</div>
@@ -34,7 +34,7 @@
 
 		<div th:replace="common/entry_meta_flagment :: entry_meta_flagment"></div>
 		
-		<div class="social_btn_container" th:if="${isTestSite == false}" >
+		<div class="social_btn_container" f:if="${isTestSite == false}" >
 		<ul>
 			<li>
 				<a href="http://b.hatena.ne.jp/entry/" class="hatena-bookmark-button" data-hatena-bookmark-layout="simple-balloon" title="このエントリーをはてなブックマークに追加">

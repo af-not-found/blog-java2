@@ -6,18 +6,29 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.afnf.blog.common.AssetsFunction;
-import net.afnf.blog.common.MyFunction;
-import net.afnf.blog.thymeleaf.processor.ProcessorUtil;
-import net.afnf.blog.thymeleaf.processor.TextProcessor;
-import net.afnf.blog.thymeleaf.processor.UTextProcessor;
+import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.Arguments;
+import org.thymeleaf.Configuration;
 import org.thymeleaf.context.IProcessingContext;
 import org.thymeleaf.dialect.AbstractDialect;
 import org.thymeleaf.dialect.IExpressionEnhancingDialect;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.IProcessor;
+import org.thymeleaf.processor.attr.AbstractConditionalVisibilityAttrProcessor;
+import org.thymeleaf.spring4.context.SpringWebContext;
+import org.thymeleaf.standard.expression.IStandardExpression;
+import org.thymeleaf.standard.expression.IStandardExpressionParser;
+import org.thymeleaf.standard.expression.StandardExpressions;
+import org.thymeleaf.util.EvaluationUtil;
+
+import net.afnf.blog.common.AssetsFunction;
+import net.afnf.blog.common.MyFunction;
+import net.afnf.blog.config.AppConfig;
+import net.afnf.blog.thymeleaf.processor.ProcessorUtil;
+import net.afnf.blog.thymeleaf.processor.TextProcessor;
+import net.afnf.blog.thymeleaf.processor.UTextProcessor;
 
 public class MyFunctionDialect extends AbstractDialect implements IExpressionEnhancingDialect {
 
@@ -37,6 +48,7 @@ public class MyFunctionDialect extends AbstractDialect implements IExpressionEnh
         processors.add(new DateProcessor("date"));
         processors.add(new TitleProcessor("title"));
         processors.add(new CommentProcessor("comment"));
+        processors.add(new IfProcessor("if"));
         return processors;
     }
 
@@ -120,5 +132,53 @@ class CommentProcessor extends UTextProcessor {
 
     protected String process(Object result) {
         return MyFunction.getInstance().renderComment((String) result);
+    }
+}
+
+class IfProcessor extends AbstractConditionalVisibilityAttrProcessor {
+
+    protected IfProcessor(final String attributeName) {
+        super(attributeName);
+    }
+
+    @Override
+    public int getPrecedence() {
+        return 0;
+    }
+
+    @Override
+    protected boolean isVisible(final Arguments arguments, final Element element, final String attributeName) {
+
+        String attributeValue = element.getAttributeValue(attributeName);
+
+        if (StringUtils.indexOf(attributeValue, "isAdminPage") != -1) {
+            Object context = arguments.getContext();
+            if (context instanceof SpringWebContext) {
+                SpringWebContext webContext = (SpringWebContext) context;
+                HttpServletRequest httpServletRequest = webContext.getHttpServletRequest();
+                boolean val = StringUtils.indexOf(httpServletRequest.getRequestURI(), "/_admin/") != -1;
+                attributeValue = StringUtils.replace(attributeValue, "isAdminPage", Boolean.toString(val));
+            }
+        }
+
+        if (StringUtils.indexOf(attributeValue, "isProductionAndNormalSite") != -1) {
+            boolean val = AppConfig.getInstance().isProductionAndNormalSite();
+            attributeValue = StringUtils.replace(attributeValue, "isProductionAndNormalSite", Boolean.toString(val));
+        }
+
+        if (StringUtils.indexOf(attributeValue, "isTestSite") != -1) {
+            boolean val = AppConfig.getInstance().isTestSite();
+            attributeValue = StringUtils.replace(attributeValue, "isTestSite", Boolean.toString(val));
+        }
+
+        final Configuration configuration = arguments.getConfiguration();
+        final IStandardExpressionParser expressionParser = StandardExpressions.getExpressionParser(configuration);
+
+        final IStandardExpression expression = expressionParser.parseExpression(configuration, arguments, attributeValue);
+        final Object value = expression.execute(configuration, arguments);
+
+        final boolean visible = EvaluationUtil.evaluateAsBoolean(value);
+
+        return visible;
     }
 }
