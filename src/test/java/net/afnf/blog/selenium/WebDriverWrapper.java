@@ -21,8 +21,6 @@ import org.openqa.selenium.support.ui.ExpectedCondition;
 import org.openqa.selenium.support.ui.Wait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
-import net.afnf.blog.common.AfnfUtil;
-
 public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptExecutor {
 
     private RemoteWebDriver instance;
@@ -57,8 +55,7 @@ public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptE
     }
 
     protected void waitForPageLoaded() {
-        AfnfUtil.sleep(10);
-        Wait<WebDriver> wait = new WebDriverWait(this, 1000);
+        Wait<WebDriver> wait = new WebDriverWait(this, 100);
         wait.until(expectation);
     }
 
