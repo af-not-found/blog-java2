@@ -70,8 +70,10 @@ public class SeleniumTestBase extends SpringTestBase {
 
     @AfterClass
     public static void afterClass() {
-        wd.quit();
-        baseurl = null;
+        if (wd != null) {
+            wd.quit();
+            baseurl = null;
+        }
     }
 
     protected void assertElementNotFound(String cssPath) {
@@ -114,12 +116,14 @@ public class SeleniumTestBase extends SpringTestBase {
     }
 
     public static void takeScreenShot(WebDriver wd, String suffix) {
-        File tmpFile = ((TakesScreenshot) wd).getScreenshotAs(OutputType.FILE);
-        try {
-            FileUtils.copyFile(tmpFile, new File("target/" + System.currentTimeMillis() + suffix + ".png"));
-        }
-        catch (IOException e) {
-            e.printStackTrace();
+        if (wd != null) {
+            File tmpFile = ((TakesScreenshot) wd).getScreenshotAs(OutputType.FILE);
+            try {
+                FileUtils.copyFile(tmpFile, new File("target/" + System.currentTimeMillis() + suffix + ".png"));
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
