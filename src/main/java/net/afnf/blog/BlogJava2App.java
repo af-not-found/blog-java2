@@ -3,14 +3,14 @@ package net.afnf.blog;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import net.afnf.blog.config.AppConfig;
-
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ConfigurableApplicationContext;
+
+import net.afnf.blog.config.AppConfig;
 
 @SpringBootApplication
 public class BlogJava2App {
@@ -32,7 +32,8 @@ public class BlogJava2App {
 
                 HttpURLConnection connection = null;
                 try {
-                    String url = "http://localhost:" + AppConfig.getInstance().getManagementPort() + "/shutdown";
+                    AppConfig appConfig = AppConfig.getInstance();
+                    String url = "http://localhost:" + appConfig.getManagementPort() + appConfig.getContextPath() + "/shutdown";
                     connection = (HttpURLConnection) new URL(url).openConnection();
                     connection.setRequestMethod("POST");
                     int responseCode = connection.getResponseCode();
