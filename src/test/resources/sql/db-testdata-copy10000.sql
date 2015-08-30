@@ -125,7 +125,8 @@ class HelloWorld {
 #### リンク
 * [ローカルホスト2](http://localhost)
 * [ローカルホスト1](http://localhost)
-* ![alt](//upload.wikimedia.org/wikipedia/commons/a/ad/Wikipedia-logo-v2-ja.png)', '<h1>Markdownのテスト1234</h1>
+* ![alt](/blogdemo/static/img/email1.png;v=21)
+* ![alt](/blogtest/static/img/email1.png;v=21)', '<h1>Markdownのテスト1234</h1>
 <p> てすとてすとてすとて <strong>すとてすとてす</strong> とてすとてすとてすと。
 てすと<code>てすとてすとてすとてすと</code>てすとてすとてす <em>とてすとてすとてす</em> とてすとてすと。
 aaaalongaaaalogaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaa
@@ -186,7 +187,8 @@ aaaalongaaaalogaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalongaaaalonga
 <ul>
 <li><a href="http://localhost">ローカルホスト2</a></li>
 <li><a href="http://localhost">ローカルホスト1</a></li>
-<li><img src="//upload.wikimedia.org/wikipedia/commons/a/ad/Wikipedia-logo-v2-ja.png" alt="alt"></li>
+<li><img src="/blogdemo/static/img/email1.png;v=21" alt="alt"></li>
+<li><img src="/blogtest/static/img/email1.png;v=21" alt="alt"></li>
 </ul>
 ', now(), 1);
 
