@@ -19,7 +19,7 @@ SERVICE_USER=bj2user
 # base directory for the spring boot jar
 export SPRINGBOOTAPP_HOME=/usr/local/$PROJECT_NAME
 # the spring boot jar-file
-export SPRINGBOOTAPP_JAR="$SPRINGBOOTAPP_HOME/$PROJECT_NAME.jar"
+export SPRINGBOOTAPP_JAR="$SPRINGBOOTAPP_HOME/$PROJECT_NAME-MYPORT.jar"
 # java executable for spring boot app, change if you have multiple jdks installed
 export SPRINGBOOTAPP_JAVA=$JAVA_HOME/bin/java
 # java or spring boot options
