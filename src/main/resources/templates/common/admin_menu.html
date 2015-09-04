@@ -8,11 +8,11 @@
 	<div class="container" th:fragment="admin_menu">
 		<div class="admin_headerdiv">
 			<div class="btn-group">
-				<button type="button" class="btn btn-default btn_new" onclick="location.href=afnfblog.contextRoot+'_admin/entries/-1'">new</button>
-				<button type="button" class="btn btn-default btn_entries" onclick="location.href=afnfblog.contextRoot+'_admin/entries/'">entries</button>
-				<button type="button" class="btn btn-default btn_comments" onclick="location.href=afnfblog.contextRoot+'_admin/comments'">comments</button>
-				<button type="button" class="btn btn-default btn_cache" onclick="location.href=afnfblog.contextRoot+'_admin/cache'">cache</button>
-				<button type="button" class="btn btn-default btn_metrics" onclick="location.href=afnfblog.contextRoot+'_admin/metrics'">metrics</button>
+				<button type="button" class="btn btn-default btn_new" onclick="return afnfblog.movePageRelative('_admin/entries/-1');">new</button>
+				<button type="button" class="btn btn-default btn_entries" onclick="return afnfblog.movePageRelative('_admin/entries/');">entries</button>
+				<button type="button" class="btn btn-default btn_comments" onclick="return afnfblog.movePageRelative('_admin/comments');">comments</button>
+				<button type="button" class="btn btn-default btn_cache" onclick="return afnfblog.movePageRelative('_admin/cache');">cache</button>
+				<button type="button" class="btn btn-default btn_metrics" onclick="return afnfblog.movePageRelative('_admin/metrics');">metrics</button>
 			</div>
 		</div>
 	</div>

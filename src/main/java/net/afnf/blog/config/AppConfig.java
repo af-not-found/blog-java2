@@ -24,17 +24,13 @@ public class AppConfig {
 
     private String buildDate;
 
-    @Value("${bj2.assets.baseurl}")
-    private String assetsBaseurl;
+    private String buildDateYmdhm;
 
     @Value("${bj2.assets.srcdir}")
     private String assetsSrcDir = null;
 
     @Value("${bj2.assets.destdir}")
     private String assetsDestDir = null;
-
-    @Value("${bj2.assets.shell}")
-    private String assetsShell = null;
 
     @Value("${bj2.selenium.targetUrl}")
     private String seleniumTargetUrl = null;
@@ -44,6 +40,9 @@ public class AppConfig {
 
     @Value("${management.port}")
     private String managementPort;
+
+    @Value("${server.context-path}")
+    private String contextPath;
 
     private static AppConfig instance = null;
 
@@ -69,6 +68,16 @@ public class AppConfig {
 
     public boolean isProductionAndNormalSite() {
         return StringUtils.equals(getActiveProfile(), "production-normal");
+    }
+
+    public void normalizeContextPath() {
+
+        if (StringUtils.isBlank(contextPath)) {
+            contextPath = "/";
+        }
+        else if (contextPath.length() >= 2 && contextPath.endsWith("/") == false) {
+            contextPath += "/";
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////
@@ -121,20 +130,12 @@ public class AppConfig {
         this.buildDate = buildDate;
     }
 
-    public String getAssetsBaseurl() {
-        return assetsBaseurl;
+    public String getBuildDateYmdhm() {
+        return buildDateYmdhm;
     }
 
-    public void setAssetsBaseurl(String assetsBaseurl) {
-        this.assetsBaseurl = assetsBaseurl;
-    }
-
-    public String getAssetsShell() {
-        return assetsShell;
-    }
-
-    public void setAssetsShell(String assetsShell) {
-        this.assetsShell = assetsShell;
+    public void setBuildDateYmdhm(String buildDateYmdhm) {
+        this.buildDateYmdhm = buildDateYmdhm;
     }
 
     public String getAssetsSrcDir() {
@@ -176,4 +177,13 @@ public class AppConfig {
     public void setManagementPort(String managementPort) {
         this.managementPort = managementPort;
     }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
+    }
+
 }

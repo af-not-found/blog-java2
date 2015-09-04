@@ -127,7 +127,7 @@ public class Selenium03_IT extends SeleniumTestBase {
         assertTrue(instance_uptime);
         assertTrue(threads_peak);
         assertTrue(classes_loaded);
-        assertThat(elements.size(), is(greaterThanOrEqualTo(42)));
+        assertThat(elements.size(), is(greaterThanOrEqualTo(41)));
     }
 
     @Test
