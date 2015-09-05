@@ -21,6 +21,7 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 import net.afnf.blog.common.AssetsFunction;
 import net.afnf.blog.common.IfModifiedSinceFilter;
 import net.afnf.blog.common.MyApplicationListener;
+import net.afnf.blog.common.CachingResourceUrlEncodingFilter;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
@@ -28,7 +29,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     @Order(value = 1)
     public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
-        return new ResourceUrlEncodingFilter();
+        return new CachingResourceUrlEncodingFilter("/static/");
     }
 
     @Bean
