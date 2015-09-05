@@ -1,11 +1,15 @@
 package net.afnf.blog.config;
 
+import java.util.TimeZone;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
+
+    public static final TimeZone JST = TimeZone.getTimeZone("JST");
 
     @Value("${spring.profiles.active}")
     private String activeProfile = null;

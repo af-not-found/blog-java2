@@ -1,18 +1,17 @@
 package net.afnf.blog.common;
 
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.TimeZone;
-
-import net.afnf.blog.config.AppConfig;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.util.UriUtils;
+
+import net.afnf.blog.config.AppConfig;
 
 public class MyFunction {
 
@@ -77,8 +76,7 @@ public class MyFunction {
         //            }
         //        }
 
-        SimpleDateFormat sdf = new SimpleDateFormat(fmt, locale);
-        sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+        FastDateFormat sdf = FastDateFormat.getInstance(fmt, AppConfig.JST, locale);
         String ret = sdf.format(date);
         return ret;
     }
@@ -88,8 +86,7 @@ public class MyFunction {
         String fmt = "yyyy/MM/dd HH:mm:ss.SSS";
         Locale locale = Locale.JAPANESE;
 
-        SimpleDateFormat sdf = new SimpleDateFormat(fmt, locale);
-        sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+        FastDateFormat sdf = FastDateFormat.getInstance(fmt, AppConfig.JST, locale);
         String ret = sdf.format(new Date(time));
         return ret;
     }
@@ -103,8 +100,7 @@ public class MyFunction {
         String fmt = "EEE, dd MMM yyyy HH:mm:ss Z";
         Locale locale = Locale.ENGLISH;
 
-        SimpleDateFormat sdf = new SimpleDateFormat(fmt, locale);
-        sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+        FastDateFormat sdf = FastDateFormat.getInstance(fmt, AppConfig.JST, locale);
         String ret = sdf.format(date);
         return ret;
     }

@@ -58,7 +58,7 @@ public class MyApplicationListener implements ApplicationListener<ContextRefresh
         Date target = null;
         if (buildDate == null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+            sdf.setTimeZone(AppConfig.JST);
             target = new Date();
             buildDate = sdf.format(target) + " runtime";
         }
@@ -67,7 +67,7 @@ public class MyApplicationListener implements ApplicationListener<ContextRefresh
                 SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm z");
                 sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
                 target = sdf.parse(buildDate);
-                sdf.setTimeZone(TimeZone.getTimeZone("JST"));
+                sdf.setTimeZone(AppConfig.JST);
                 buildDate = sdf.format(target);
             }
             catch (Exception e) {
@@ -78,7 +78,7 @@ public class MyApplicationListener implements ApplicationListener<ContextRefresh
         AppConfig.getInstance().setBuildDate(buildDate);
 
         SimpleDateFormat sdfshort = new SimpleDateFormat("yyMMddHHmm");
-        sdfshort.setTimeZone(TimeZone.getTimeZone("JST"));
+        sdfshort.setTimeZone(AppConfig.JST);
         AppConfig.getInstance().setBuildDateYmdhm(sdfshort.format(target));
     }
 }
