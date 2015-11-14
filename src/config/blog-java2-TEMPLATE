@@ -23,7 +23,7 @@ export SPRINGBOOTAPP_JAR="$SPRINGBOOTAPP_HOME/$PROJECT_NAME-MYPORT.jar"
 # java executable for spring boot app, change if you have multiple jdks installed
 export SPRINGBOOTAPP_JAVA=$JAVA_HOME/bin/java
 # java or spring boot options
-export JAVA_OPT="-Dserver.port=MYPORT -Duser.timezone=JST -Dspring.profiles.active=MYPROF -Xmx220M -Xss256k -Djava.security.egd=file:/dev/./urandom -Dspring.config.location=/home/bj2user/secret.properties"
+export JAVA_OPT="-Dserver.port=MYPORT -Duser.timezone=Asia/Tokyo -Dspring.profiles.active=MYPROF -Xmx220M -Xss256k -Djava.security.egd=file:/dev/./urandom -Dspring.config.location=/home/bj2user/secret.properties"
 # spring boot pid-file
 export PIDFILE=/var/run/$PROJECT_NAME/$PROJECT_ID.pid
 # killproc wait [sec]
