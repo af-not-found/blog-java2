@@ -21,7 +21,6 @@ import org.springframework.web.servlet.resource.VersionResourceResolver;
 import net.afnf.blog.common.AssetsFunction;
 import net.afnf.blog.common.IfModifiedSinceFilter;
 import net.afnf.blog.common.MyApplicationListener;
-import net.afnf.blog.common.CachingResourceUrlEncodingFilter;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
@@ -29,7 +28,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Bean
     @Order(value = 1)
     public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
-        return new CachingResourceUrlEncodingFilter("/static/");
+        return new ResourceUrlEncodingFilter();
     }
 
     @Bean
@@ -48,6 +47,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         configurer.setUseSuffixPatternMatch(false);
     }
 
+    /** キャッシュ時間 = 1年 */
     public static final int CACHE_PERIOD = 1 * 366 * 24 * 60 * 60;
 
     @Override
@@ -57,8 +57,8 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         MyApplicationListener.updateBuildDate();
 
         // 開発時で、さらにJUnitで無い場合は、常にキャッシュせず、Cache-bustingもしない
-        AppConfig appConfig = AppConfig.getInstance();
-        if (appConfig.isDevelopment() && appConfig.isTestSite() == false) {
+        boolean devResolver = AppConfig.getInstance().isDevelopment() && AppConfig.getInstance().isTestSite() == false;
+        if (devResolver) {
             registry.addResourceHandler("/static/**").addResourceLocations("dummy").setCachePeriod(0).resourceChain(false)
                     .addResolver(new MyPathResourceResolver());
         }
