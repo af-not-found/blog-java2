@@ -57,7 +57,7 @@ public class MyApplicationListener implements ApplicationListener<ContextRefresh
             }
         }
         catch (Throwable e) {
-            logger.warn("failed to read MANIFEST.MF, " + e.toString());
+            logger.info("failed to read MANIFEST.MF, e=" + e.toString() + ", continue...");
         }
 
         // 取得できない場合は、現在時刻からbuildDateを生成
