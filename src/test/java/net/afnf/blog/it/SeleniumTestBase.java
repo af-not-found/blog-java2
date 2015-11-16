@@ -27,6 +27,7 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import net.afnf.blog.SpringTestBase;
@@ -45,7 +46,7 @@ public class SeleniumTestBase extends SpringTestBase {
     protected static final long CACHE_UPDATE_WAIT = 2000;
 
     protected static String baseurl;
-    protected static WebDriver wd;
+    protected static WebDriverWrapper wd;
 
     @Rule
     public SeleniumTestWatcher watcher = new SeleniumTestWatcher();
@@ -97,6 +98,10 @@ public class SeleniumTestBase extends SpringTestBase {
 
     protected void postAndCloseModal() {
         wd.findElement(By.name("post")).click();
+        // FirefoxDriverだと遅延が必要っぽい
+        if (wd.getInstance() instanceof FirefoxDriver) {
+            AfnfUtil.sleep(200);
+        }
         wd.findElement(By.id("close_modal")).click();
     }
 
