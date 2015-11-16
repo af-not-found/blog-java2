@@ -45,6 +45,9 @@ public class AppConfig {
     @Value("${management.port}")
     private String managementPort;
 
+    @Value("${server.context-path}")
+    private String contextPath;
+
     private static AppConfig instance = null;
 
     public AppConfig() {
@@ -175,5 +178,13 @@ public class AppConfig {
 
     public void setManagementPort(String managementPort) {
         this.managementPort = managementPort;
+    }
+
+    public String getContextPath() {
+        return contextPath;
+    }
+
+    public void setContextPath(String contextPath) {
+        this.contextPath = contextPath;
     }
 }

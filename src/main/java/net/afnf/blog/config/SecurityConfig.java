@@ -50,10 +50,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and() //
                 .csrf().disable() //
                 .headers().cacheControl().disable() //  
-                .headers().httpStrictTransportSecurity().disable() //  
-                //
-                .headers().contentTypeOptions().frameOptions().xssProtection() //
-        ;
+                .httpStrictTransportSecurity().disable() //  
+                ;
     }
 
     @Override
