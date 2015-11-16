@@ -27,8 +27,8 @@ public class BlogJava2App {
         }
         catch (Exception e) {
 
-            // java.net.BindException: Address already in use: bind
-            if ("Tomcat connector in failed state".equals(e.getMessage())) {
+            // 二重起動
+            if ("Unable to start embedded Tomcat servlet container".equals(e.getMessage())) {
 
                 HttpURLConnection connection = null;
                 try {
