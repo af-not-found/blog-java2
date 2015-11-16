@@ -212,6 +212,7 @@ public class Selenium01_IT extends SeleniumTestBase {
         JavascriptExecutor je = (JavascriptExecutor) wd;
 
         for (int i = 0; i < tokens.length; i++) {
+            logger.debug("loop" + i);
             wd.findElement(By.linkText("blog1234")).click();
             if (tokens[i] != null) {
                 logger.debug(i + " : " + tokens[i] + " : " + Crypto.decrypt(tokens[i]));
