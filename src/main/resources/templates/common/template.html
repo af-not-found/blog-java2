@@ -9,32 +9,32 @@
 <link title="title" th:title="${#conf.title}" rel="alternate" type="application/rss+xml" href="/rss.xml" th:href="@{/rss.xml}" />
 <meta name="author" content="afnf" />
 
-<link rel="stylesheet" type="text/css" href="/static/blog.min.css" as:href="/static/blog.min.css" />
+<link rel="stylesheet" type="text/css" href="/static/blog.min.css" th:href="@{/static/blog.min.css}" />
 <style type="text/css" th:inline="text">
 .headerdiv {
-	background-image: url('[[${#as.url("/static/img/top_800.jpg")}]]');
+	background-image: url('[[@{/static/img/top_800.jpg}]]');
 }
 
 @media screen and (max-width : 700px) {
 	.headerdiv {
-		background-image: url('[[${#as.url("/static/img/top_540.jpg")}]]');
+		background-image: url('[[@{/static/img/top_540.jpg}]]');
 	}
 }
 
 @media screen and (max-width : 540px) {
 	.headerdiv {
-		background-image: url('[[${#as.url("/static/img/top_440.jpg")}]]');
+		background-image: url('[[@{/static/img/top_440.jpg}]]');
 	}
 }
 
 @media screen and (max-width : 330px) {
 	.headerdiv {
-		background-image: url('[[${#as.url("/static/img/top_330.jpg")}]]');
+		background-image: url('[[@{/static/img/top_330.jpg}]]');
 	}
 }
 </style>
 
-<link rel="shortcut icon" type="image/x-icon" href="/static/img/favicon.ico" as:href="/static/img/favicon.ico" />
+<link rel="shortcut icon" type="image/x-icon" th:href="@{/static/img/favicon.ico}" />
 
 </head>
 <body>
@@ -61,16 +61,16 @@
 		<script src="//oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
 		<![endif]-->
 
-		<script src="/static/jquery-1.11.0.min.js" as:src="/static/jquery-1.11.0.min.js"></script>
-		<script src="/static/blog.min.js" as:src="/static/blog.min.js"></script>
+		<script src="/static/jquery-1.11.0.min.js" th:src="@{/static/jquery-1.11.0.min.js}"></script>
+		<script src="/static/blog.min.js" th:src="@{/static/blog.min.js}"></script>
 		<script th:inline="javascript">
-			afnfblog.contextRoot = /*[[@{/}]]*/"/blog";
+			afnfblog.contextRoot = /*[[${#conf.contextPath}]]*/"/blog/";
 			afnfblog.totalPageCount = /*[[${pagingList == null ? 0 : pagingList.totalPageCount}]]*/0;
 			afnfblog.thisPage = /*[[${pagingList == null ? 0 : pagingList.thisPage}]]*/0;
 		</script>
 
 		<span f:if="${isAdminPage == true}">
-			<script src="/static/admin.min.js" as:src="/static/admin.min.js"></script>
+			<script src="/static/admin.min.js" th:src="@{/static/admin.min.js}"></script>
 		</span>
 
 	</div>

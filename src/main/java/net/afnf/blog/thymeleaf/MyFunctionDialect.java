@@ -1,9 +1,7 @@
 package net.afnf.blog.thymeleaf;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -11,9 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.Configuration;
-import org.thymeleaf.context.IProcessingContext;
 import org.thymeleaf.dialect.AbstractDialect;
-import org.thymeleaf.dialect.IExpressionEnhancingDialect;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.processor.attr.AbstractConditionalVisibilityAttrProcessor;
@@ -23,13 +19,12 @@ import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
 import org.thymeleaf.util.EvaluationUtil;
 
-import net.afnf.blog.common.AssetsFunction;
 import net.afnf.blog.common.MyFunction;
 import net.afnf.blog.thymeleaf.processor.ProcessorUtil;
 import net.afnf.blog.thymeleaf.processor.TextProcessor;
 import net.afnf.blog.thymeleaf.processor.UTextProcessor;
 
-public class MyFunctionDialect extends AbstractDialect implements IExpressionEnhancingDialect {
+public class MyFunctionDialect extends AbstractDialect {
 
     public MyFunctionDialect() {
         super();
@@ -49,13 +44,6 @@ public class MyFunctionDialect extends AbstractDialect implements IExpressionEnh
         processors.add(new CommentProcessor("comment"));
         processors.add(new IfProcessor("if"));
         return processors;
-    }
-
-    @Override
-    public Map<String, Object> getAdditionalExpressionObjects(final IProcessingContext processingContext) {
-        final Map<String, Object> additionalExpressionObjects = new HashMap<String, Object>(2, 1);
-        additionalExpressionObjects.put("f", AssetsFunction.getInstance());
-        return additionalExpressionObjects;
     }
 }
 

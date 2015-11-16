@@ -11,10 +11,10 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.afnf.blog.config.AppConfig;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.afnf.blog.config.AppConfig;
 
 public class IfModifiedSinceFilter implements Filter {
 
@@ -27,8 +27,8 @@ public class IfModifiedSinceFilter implements Filter {
     }
 
     @Override
-    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,
-            ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+            throws IOException, ServletException {
 
         if (request instanceof HttpServletRequest) {
             HttpServletRequest req = (HttpServletRequest) request;
@@ -38,9 +38,10 @@ public class IfModifiedSinceFilter implements Filter {
             if (method != null && (method.equals("GET") || method.equals("HEAD"))) {
 
                 // staticと_adminは対象外
+                // ※staticはFixedVersionStrategyで数字が付く場合がある
                 String servletPath = req.getServletPath();
                 if (servletPath != null
-                        && (servletPath.indexOf("/static/") == 0 || servletPath.indexOf("/_admin/") == 0) == false) {
+                        && (servletPath.indexOf("/static/") >= 0 || servletPath.indexOf("/_admin/") == 0) == false) {
 
                     // Developmentなら無効化
                     if (AppConfig.getInstance().isDevelopment() == false) {

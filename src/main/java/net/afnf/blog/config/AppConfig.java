@@ -1,11 +1,15 @@
 package net.afnf.blog.config;
 
+import java.util.TimeZone;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AppConfig {
+
+    public static final TimeZone JST = TimeZone.getTimeZone("JST");
 
     @Value("${spring.profiles.active}")
     private String activeProfile = null;
@@ -24,17 +28,13 @@ public class AppConfig {
 
     private String buildDate;
 
-    @Value("${bj2.assets.baseurl}")
-    private String assetsBaseurl;
+    private String buildDateYmdhm;
 
     @Value("${bj2.assets.srcdir}")
     private String assetsSrcDir = null;
 
     @Value("${bj2.assets.destdir}")
     private String assetsDestDir = null;
-
-    @Value("${bj2.assets.shell}")
-    private String assetsShell = null;
 
     @Value("${bj2.selenium.targetUrl}")
     private String seleniumTargetUrl = null;
@@ -124,20 +124,12 @@ public class AppConfig {
         this.buildDate = buildDate;
     }
 
-    public String getAssetsBaseurl() {
-        return assetsBaseurl;
+    public String getBuildDateYmdhm() {
+        return buildDateYmdhm;
     }
 
-    public void setAssetsBaseurl(String assetsBaseurl) {
-        this.assetsBaseurl = assetsBaseurl;
-    }
-
-    public String getAssetsShell() {
-        return assetsShell;
-    }
-
-    public void setAssetsShell(String assetsShell) {
-        this.assetsShell = assetsShell;
+    public void setBuildDateYmdhm(String buildDateYmdhm) {
+        this.buildDateYmdhm = buildDateYmdhm;
     }
 
     public String getAssetsSrcDir() {

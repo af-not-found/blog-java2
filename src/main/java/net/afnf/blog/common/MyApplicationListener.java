@@ -3,10 +3,9 @@ package net.afnf.blog.common;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 import java.util.jar.Attributes;
 import java.util.jar.Manifest;
-
-import net.afnf.blog.config.AppConfig;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -14,6 +13,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.event.ContextRefreshedEvent;
+
+import net.afnf.blog.config.AppConfig;
 
 @Configuration
 public class MyApplicationListener implements ApplicationListener<ContextRefreshedEvent> {
@@ -32,20 +33,25 @@ public class MyApplicationListener implements ApplicationListener<ContextRefresh
         if (StringUtils.isEmpty(AppConfig.getInstance().getActiveProfile())) {
             throw new IllegalStateException("profile is not specified");
         }
-
-        // buildDateをMANIFEST.MFから取得
-        updateBuildDate();
     }
 
-    protected void updateBuildDate() {
-        String buildDate = null;
-        try (InputStream inputStream = this.getClass().getResourceAsStream("/META-INF/MANIFEST.MF")) {
+    public static void updateBuildDate() {
+
+        // MANIFEST.MFからのbuildDate取得を試みる（productionのみ）
+        String buildDateStr = null;
+        Date buildDate = null;
+        try (InputStream inputStream = AppConfig.getInstance().getClass().getResourceAsStream("/META-INF/MANIFEST.MF")) {
             if (inputStream != null) {
                 Manifest manifest = new Manifest(inputStream);
                 if (manifest != null) {
                     Attributes attributes = manifest.getMainAttributes();
                     if (attributes != null) {
-                        buildDate = attributes.getValue("Build-Date");
+                        // パース
+                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm z");
+                        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                        buildDate = sdf.parse(attributes.getValue("Build-Date"));
+                        sdf.setTimeZone(AppConfig.JST);
+                        buildDateStr = sdf.format(buildDate);
                     }
                 }
             }
@@ -54,12 +60,21 @@ public class MyApplicationListener implements ApplicationListener<ContextRefresh
             logger.warn("failed to read MANIFEST.MF, " + e.toString());
         }
 
-        if (buildDate == null) {
+        // 取得できない場合は、現在時刻からbuildDateを生成
+        if (buildDateStr == null) {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            buildDate = sdf.format(new Date()) + " runtime";
+            sdf.setTimeZone(AppConfig.JST);
+            buildDate = new Date();
+            buildDateStr = sdf.format(buildDate) + " runtime";
         }
 
-        logger.info("Build-Date : " + buildDate);
-        AppConfig.getInstance().setBuildDate(buildDate);
+        // AppConfigに設定
+        logger.info("Build-Date : " + buildDateStr);
+        AppConfig.getInstance().setBuildDate(buildDateStr);
+
+        // AssetPileline用の日付をAppConfigに設定
+        SimpleDateFormat sdfshort = new SimpleDateFormat("yyMMddHHmm");
+        sdfshort.setTimeZone(AppConfig.JST);
+        AppConfig.getInstance().setBuildDateYmdhm(sdfshort.format(buildDate));
     }
 }

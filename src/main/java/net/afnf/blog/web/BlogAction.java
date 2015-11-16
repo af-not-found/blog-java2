@@ -1,6 +1,5 @@
 package net.afnf.blog.web;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -8,6 +7,7 @@ import java.util.Locale;
 import javax.validation.Valid;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -82,9 +82,9 @@ public class BlogAction extends TokenCheckableAction {
         // パースに失敗した場合はtopへ
         String monthDisp = "";
         try {
-            SimpleDateFormat sdf_param = new SimpleDateFormat("yyyyMM");
+            FastDateFormat sdf_param = FastDateFormat.getInstance("yyyyMM");
             Date date = sdf_param.parse(month);
-            SimpleDateFormat sdf_disp = new SimpleDateFormat("MMM yyyy", Locale.ENGLISH);
+            FastDateFormat sdf_disp = FastDateFormat.getInstance("MMM yyyy", Locale.ENGLISH);
             monthDisp = sdf_disp.format(date);
         }
         catch (Throwable e) {
