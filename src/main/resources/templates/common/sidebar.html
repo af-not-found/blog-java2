@@ -14,7 +14,7 @@
 					<a href='/9999' th:href='@{/{id}(id=${entry.id})}' th:text="${entry.title}">title</a>
 				</div>
 				<div class="sb_more">
-					<a href='/' th:href='${#conf.contextPath}'>more...</a>
+					<a href='/' th:href='@{/}'>more...</a>
 				</div>
 			</div>
 		</div>
@@ -43,7 +43,7 @@
 			<h3 class="sb_header">archive</h3>
 			<div class="sb_archive">
 				<div>
-					<a href='/' th:href='${#conf.contextPath}'>ALL</a>
+					<a href='/' th:href='@{/}'>ALL</a>
 					(<span th:text="${entryCache.totalNormalCount}">999999</span>)
 				</div>
 				<div class='sb_clop'>

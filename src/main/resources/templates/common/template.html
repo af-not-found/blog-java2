@@ -64,7 +64,7 @@
 		<script src="/static/jquery-1.11.0.min.js" th:src="@{/static/jquery-1.11.0.min.js}"></script>
 		<script src="/static/blog.min.js" th:src="@{/static/blog.min.js}"></script>
 		<script th:inline="javascript">
-			afnfblog.contextRoot = /*[[${#conf.contextPath}]]*/"/blog/";
+			afnfblog.contextRoot = /*[[@{/}]]*/"/blog/";
 			afnfblog.totalPageCount = /*[[${pagingList == null ? 0 : pagingList.totalPageCount}]]*/0;
 			afnfblog.thisPage = /*[[${pagingList == null ? 0 : pagingList.thisPage}]]*/0;
 		</script>
