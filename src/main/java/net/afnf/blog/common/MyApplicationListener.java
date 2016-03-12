@@ -37,44 +37,49 @@ public class MyApplicationListener implements ApplicationListener<ContextRefresh
 
     public static void updateBuildDate() {
 
-        // MANIFEST.MFからのbuildDate取得を試みる（productionのみ）
-        String buildDateStr = null;
-        Date buildDate = null;
-        try (InputStream inputStream = AppConfig.getInstance().getClass().getResourceAsStream("/META-INF/MANIFEST.MF")) {
-            if (inputStream != null) {
-                Manifest manifest = new Manifest(inputStream);
-                if (manifest != null) {
-                    Attributes attributes = manifest.getMainAttributes();
-                    if (attributes != null) {
-                        // パース
-                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm z");
-                        sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
-                        buildDate = sdf.parse(attributes.getValue("Build-Date"));
-                        sdf.setTimeZone(AppConfig.JST);
-                        buildDateStr = sdf.format(buildDate);
+        // BuildDate未設定の場合
+        AppConfig appConfig = AppConfig.getInstance();
+        if (StringUtils.isBlank(appConfig.getBuildDate())) {
+
+            // MANIFEST.MFからのbuildDate取得を試みる（productionのみ）
+            String buildDateStr = null;
+            Date buildDate = null;
+            try (InputStream inputStream = appConfig.getClass().getResourceAsStream("/META-INF/MANIFEST.MF")) {
+                if (inputStream != null) {
+                    Manifest manifest = new Manifest(inputStream);
+                    if (manifest != null) {
+                        Attributes attributes = manifest.getMainAttributes();
+                        if (attributes != null) {
+                            // パース
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm z");
+                            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+                            buildDate = sdf.parse(attributes.getValue("Build-Date"));
+                            sdf.setTimeZone(AppConfig.JST);
+                            buildDateStr = sdf.format(buildDate);
+                        }
                     }
                 }
             }
-        }
-        catch (Throwable e) {
-            logger.info("failed to read MANIFEST.MF, e=" + e.toString() + ", continue...");
-        }
+            catch (Throwable e) {
+                logger.info("failed to read MANIFEST.MF, e=" + e.toString() + ", continue...");
+            }
 
-        // 取得できない場合は、現在時刻からbuildDateを生成
-        if (buildDateStr == null) {
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
-            sdf.setTimeZone(AppConfig.JST);
-            buildDate = new Date();
-            buildDateStr = sdf.format(buildDate) + " runtime";
+            // 取得できない場合は、現在時刻からbuildDateを生成
+            if (buildDateStr == null) {
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                sdf.setTimeZone(AppConfig.JST);
+                buildDate = new Date();
+                buildDateStr = sdf.format(buildDate) + " runtime";
+            }
+
+            // AppConfigに設定
+            logger.info("Build-Date : " + buildDateStr);
+            appConfig.setBuildDate(buildDateStr);
+
+            // AssetPileline用の日付をAppConfigに設定
+            SimpleDateFormat sdfshort = new SimpleDateFormat("yyMMddHHmm");
+            sdfshort.setTimeZone(AppConfig.JST);
+            appConfig.setBuildDateYmdhm(sdfshort.format(buildDate));
         }
-
-        // AppConfigに設定
-        logger.info("Build-Date : " + buildDateStr);
-        AppConfig.getInstance().setBuildDate(buildDateStr);
-
-        // AssetPileline用の日付をAppConfigに設定
-        SimpleDateFormat sdfshort = new SimpleDateFormat("yyMMddHHmm");
-        sdfshort.setTimeZone(AppConfig.JST);
-        AppConfig.getInstance().setBuildDateYmdhm(sdfshort.format(buildDate));
     }
 }
