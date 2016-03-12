@@ -8,6 +8,7 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.Point;
+import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
@@ -118,5 +119,10 @@ class ClickAndWaitRemoteWebElement implements WebElement {
     @Override
     public void submit() {
         parent.submit();
+    }
+
+    @Override
+    public Rectangle getRect() {
+        return parent.getRect();
     }
 }
