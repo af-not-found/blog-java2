@@ -34,6 +34,7 @@ public class IfModifiedSinceFilter implements Filter {
             HttpServletRequest req = (HttpServletRequest) request;
             HttpServletResponse res = (HttpServletResponse) response;
 
+            // GET/HEAD methodが対象
             String method = req.getMethod();
             if (method != null && (method.equals("GET") || method.equals("HEAD"))) {
 
