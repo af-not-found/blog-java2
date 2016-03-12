@@ -1,5 +1,5 @@
 # blog-java2
-blog-java2 is a blog engine powered by java8, spring-boot1.2, mybatis3.
+blog-java2 is a blog engine powered by java8, Spring Boot 1.3, mybatis3.
 
 ## link
 main site
