@@ -20,32 +20,40 @@ public class CachingResourceUrlEncodingFilter extends ResourceUrlEncodingFilter 
 
     private static final Log logger = LogFactory.getLog(CachingResourceUrlEncodingFilter.class);
 
-    private String prefix;
+    private String encTargetPrefix;
 
     public CachingResourceUrlEncodingFilter() {
     }
 
-    public CachingResourceUrlEncodingFilter(String prefix) {
-        this.prefix = prefix;
+    public CachingResourceUrlEncodingFilter(String encTargetPrefix) {
+        this.encTargetPrefix = encTargetPrefix;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        filterChain.doFilter(request, new CachingResourceUrlEncodingResponseWrapper(request, response, prefix));
+        filterChain.doFilter(request, new CachingResourceUrlEncodingResponseWrapper(request, response, encTargetPrefix));
     }
 
     private static class CachingResourceUrlEncodingResponseWrapper extends HttpServletResponseWrapper {
-        private HttpServletRequest request;
+
+        private final HttpServletRequest request;
+
+        /* Cache the index and prefix of the path within the DispatcherServlet mapping */
         private Integer indexLookupPath;
-        private String contextPathAndPrefix;
+
+        private String prefixLookupPath;
+
+        private String encTargetPrefixWithContextPath;
+
         private static Map<String, String> resolveCache = new ConcurrentHashMap<>();
 
-        public CachingResourceUrlEncodingResponseWrapper(HttpServletRequest request, HttpServletResponse wrapped, String prefix) {
+        public CachingResourceUrlEncodingResponseWrapper(HttpServletRequest request, HttpServletResponse wrapped,
+                String encTargetPrefix) {
             super(wrapped);
             this.request = request;
-            if (prefix != null) {
-                this.contextPathAndPrefix = request.getContextPath() + prefix;
+            if (encTargetPrefix != null) {
+                this.encTargetPrefixWithContextPath = request.getContextPath() + encTargetPrefix;
             }
         }
 
@@ -56,49 +64,60 @@ public class CachingResourceUrlEncodingFilter extends ResourceUrlEncodingFilter 
             if (value != null) {
                 return value;
             }
-            else {
-                if (contextPathAndPrefix == null || url.startsWith(contextPathAndPrefix)) {
 
-                    ResourceUrlProvider resourceUrlProvider = getResourceUrlProvider();
-                    if (resourceUrlProvider == null) {
-                        logger.debug("Request attribute exposing ResourceUrlProvider not found");
-                        return super.encodeURL(url);
-                    }
-                    initIndexLookupPath(resourceUrlProvider);
-                    if (url.length() >= this.indexLookupPath) {
-                        String prefix = url.substring(0, this.indexLookupPath);
-                        int suffixIndex = getQueryParamsIndex(url);
-                        String suffix = url.substring(suffixIndex);
-                        String lookupPath = url.substring(this.indexLookupPath, suffixIndex);
-                        lookupPath = resourceUrlProvider.getForLookupPath(lookupPath);
-                        if (lookupPath != null) {
-                            value = super.encodeURL(prefix + lookupPath + suffix);
+            if (encTargetPrefixWithContextPath == null || url.startsWith(encTargetPrefixWithContextPath)) {
+
+                ResourceUrlProvider resourceUrlProvider = getResourceUrlProvider();
+                if (resourceUrlProvider == null) {
+                    logger.debug("Request attribute exposing ResourceUrlProvider not found");
+                    return super.encodeURL(url);
+                }
+
+                initLookupPath(resourceUrlProvider);
+                if (url.startsWith(this.prefixLookupPath)) {
+                    int suffixIndex = getQueryParamsIndex(url);
+                    String suffix = url.substring(suffixIndex);
+                    String lookupPath = url.substring(this.indexLookupPath, suffixIndex);
+                    lookupPath = resourceUrlProvider.getForLookupPath(lookupPath);
+                    if (lookupPath != null) {
+                        value = super.encodeURL(this.prefixLookupPath + lookupPath + suffix);
+                        if (value != null) {
                             resolveCache.put(url, value);
-                            return value;
                         }
+                        return value;
                     }
                 }
-                value = super.encodeURL(url);
-                return value;
             }
+
+            return super.encodeURL(url);
         }
 
         private ResourceUrlProvider getResourceUrlProvider() {
-            String name = ResourceUrlProviderExposingInterceptor.RESOURCE_URL_PROVIDER_ATTR;
-            return (ResourceUrlProvider) this.request.getAttribute(name);
+            return (ResourceUrlProvider) this.request
+                    .getAttribute(ResourceUrlProviderExposingInterceptor.RESOURCE_URL_PROVIDER_ATTR);
         }
 
-        private void initIndexLookupPath(ResourceUrlProvider urlProvider) {
+        private void initLookupPath(ResourceUrlProvider urlProvider) {
             if (this.indexLookupPath == null) {
                 String requestUri = urlProvider.getPathHelper().getRequestUri(this.request);
                 String lookupPath = urlProvider.getPathHelper().getLookupPathForRequest(this.request);
                 this.indexLookupPath = requestUri.lastIndexOf(lookupPath);
+                this.prefixLookupPath = requestUri.substring(0, this.indexLookupPath);
+
+                if ("/".equals(lookupPath) && !"/".equals(requestUri)) {
+                    String contextPath = urlProvider.getPathHelper().getContextPath(this.request);
+                    if (requestUri.equals(contextPath)) {
+                        this.indexLookupPath = requestUri.length();
+                        this.prefixLookupPath = requestUri;
+                    }
+                }
             }
         }
 
         private int getQueryParamsIndex(String url) {
             int index = url.indexOf("?");
-            return index > 0 ? index : url.length();
+            return (index > 0 ? index : url.length());
         }
     }
+
 }
