@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
@@ -34,16 +35,16 @@ public class WebConfig extends WebMvcConfigurerAdapter {
     @Order(value = 1)
     public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
 
-        // システムプロパティーが設定されていればCachingResourceUrlEncodingFilterを有効化
-        String fast = System.getProperty("fast");
-        if (fast != null && fast.equals("true")) {
-            logger.info("using CachingResourceUrlEncodingFilter");
-            return new CachingResourceUrlEncodingFilter("/static/");
-        }
-        // そうでなければデフォルト実装
-        else {
+        // システムプロパティーが設定されていればデフォルト実装を使う
+        String prop = System.getProperty("ResourceUrlEncodingFilter");
+        if (StringUtils.equals(prop, "original")) {
             logger.info("using ResourceUrlEncodingFilter");
             return new ResourceUrlEncodingFilter();
+        }
+        // そうでなければCachingResourceUrlEncodingFilterを使う
+        else {
+            logger.info("using CachingResourceUrlEncodingFilter");
+            return new CachingResourceUrlEncodingFilter("/static/");
         }
     }
 
