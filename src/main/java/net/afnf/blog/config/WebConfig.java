@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
@@ -19,16 +21,30 @@ import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
 import org.springframework.web.servlet.resource.VersionResourceResolver;
 
 import net.afnf.blog.common.AssetsFunction;
+import net.afnf.blog.common.CachingResourceUrlEncodingFilter;
 import net.afnf.blog.common.IfModifiedSinceFilter;
 import net.afnf.blog.common.MyApplicationListener;
 
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter {
 
+    private static final Log logger = LogFactory.getLog(WebConfig.class);
+
     @Bean
     @Order(value = 1)
     public ResourceUrlEncodingFilter resourceUrlEncodingFilter() {
-        return new ResourceUrlEncodingFilter();
+
+        // システムプロパティーが設定されていればCachingResourceUrlEncodingFilterを有効化
+        String fast = System.getProperty("fast");
+        if (fast != null && fast.equals("true")) {
+            logger.info("using CachingResourceUrlEncodingFilter");
+            return new CachingResourceUrlEncodingFilter("/static/");
+        }
+        // そうでなければデフォルト実装
+        else {
+            logger.info("using ResourceUrlEncodingFilter");
+            return new ResourceUrlEncodingFilter();
+        }
     }
 
     @Bean
