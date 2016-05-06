@@ -1,0 +1,15 @@
+[Unit]
+Description=blog-java2-MYPROF-MYPORT
+After=nginx.service
+
+[Service]
+User=bj2user
+Group=bj2user
+ExecStart=/etc/alternatives/java_sdk/bin/java -Dserver.port=MYPORT -Duser.timezone=Asia/Tokyo -Dspring.profiles.active=MYPROF -Xmx220M -Xss256k -Djava.security.egd=file:/dev/./urandom -Dspring.config.location=/home/bj2user/secret.properties -jar /usr/local/blog-java2/blog-java2-MYPORT.jar
+StandardOutput=null
+StandardError=null
+SuccessExitStatus=143
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
