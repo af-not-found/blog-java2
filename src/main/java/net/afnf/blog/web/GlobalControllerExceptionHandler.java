@@ -1,21 +1,24 @@
 package net.afnf.blog.web;
 
+import java.sql.SQLException;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import net.afnf.blog.common.JsonResponseDemoSiteErrorException;
-import net.afnf.blog.common.JsonResponseException;
 
 import org.mybatis.spring.MyBatisSystemException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.TypeMismatchException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
 import org.springframework.validation.BindException;
 import org.springframework.web.bind.UnsatisfiedServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import net.afnf.blog.common.JsonResponseDemoSiteErrorException;
+import net.afnf.blog.common.JsonResponseException;
 
 @ControllerAdvice
 class GlobalDefaultExceptionHandler {
@@ -51,7 +54,7 @@ class GlobalDefaultExceptionHandler {
             logger.info(estr_long);
         }
         // DB障害
-        else if (e instanceof MyBatisSystemException) {
+        else if (e instanceof MyBatisSystemException || e instanceof SQLException || e instanceof DataAccessException) {
             dberror = true;
             logger.info(estr_long);
         }
