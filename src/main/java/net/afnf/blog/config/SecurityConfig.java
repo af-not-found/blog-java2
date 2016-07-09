@@ -8,11 +8,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
@@ -49,24 +48,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable() //
                 .headers().cacheControl().disable() //  
                 .httpStrictTransportSecurity().disable() //  
-                ;
+        ;
     }
 
-    @Override
-    @Bean
-    public UserDetailsService userDetailsServiceBean() throws Exception {
+    @Configuration
+    public class AuthenticationManagerConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
-        JdbcDaoImpl userDetailsService = new JdbcDaoImpl();
-        userDetailsService.setDataSource(dataSource);
-        userDetailsService.setUsersByUsernameQuery("select username, password, true from users where username = ?");
-        userDetailsService.setAuthoritiesByUsernameQuery("select username, role from users where username = ?");
-        return userDetailsService;
-    }
-
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth, UserDetailsService userDetailsService,
-            PasswordEncoder passwordEncoder) throws Exception {
-        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+        @Override
+        public void init(AuthenticationManagerBuilder auth) throws Exception {
+            auth.jdbcAuthentication() //
+                    .dataSource(dataSource)
+                    .usersByUsernameQuery("select username, password, true from users where username = ?")
+                    .authoritiesByUsernameQuery("select username, role from users where username = ?")
+                    .passwordEncoder(passwordEncoder());
+        }
     }
 
     @Bean
