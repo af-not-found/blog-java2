@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Properties;
 
 import javax.mail.Authenticator;
+import javax.mail.Message.RecipientType;
 import javax.mail.PasswordAuthentication;
 import javax.mail.Session;
 import javax.mail.Transport;
@@ -142,10 +143,11 @@ public class SmtpManager {
                 msg.setSubject(title);
                 msg.setSentDate(new Date());
                 msg.setText(message, "iso-2022-jp");
-                InternetAddress[] addresses = { new InternetAddress(to) };
+                InternetAddress toAddress = new InternetAddress(to);
 
                 // GMail API
                 if (gmailapi) {
+                    msg.setRecipient(RecipientType.TO, toAddress);
 
                     // Messageを生成
                     ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -164,7 +166,7 @@ public class SmtpManager {
                     String protocol = smtps ? "smtps" : "smtp";
                     Transport transport = session.getTransport(protocol);
                     transport.connect(hostport[0], Integer.parseInt(hostport[1]), id, raw_password);
-                    transport.sendMessage(msg, addresses);
+                    transport.sendMessage(msg, new InternetAddress[] { toAddress });
                     transport.close();
                 }
 
