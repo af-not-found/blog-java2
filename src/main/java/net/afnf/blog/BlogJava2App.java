@@ -9,6 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.embedded.PortInUseException;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import net.afnf.blog.config.AppConfig;
@@ -27,37 +28,30 @@ public class BlogJava2App {
         try {
             return run(clazz, args);
         }
-        catch (Exception e) {
+        // 二重起動
+        catch (PortInUseException e) {
+            HttpURLConnection connection = null;
+            try {
+                AppConfig appConfig = AppConfig.getInstance();
+                String url = "http://localhost:" + appConfig.getManagementPort() + "/shutdown";
+                connection = (HttpURLConnection) new URL(url).openConnection();
+                connection.setRequestMethod("POST");
+                int responseCode = connection.getResponseCode();
+                if (responseCode == 200) {
+                    logger.info("Shutdown OK");
 
-            // 二重起動
-            if ("Unable to start embedded Tomcat servlet container".equals(e.getMessage())) {
-
-                HttpURLConnection connection = null;
-                try {
-                    AppConfig appConfig = AppConfig.getInstance();
-                    String url = "http://localhost:" + appConfig.getManagementPort() + appConfig.getContextPath() + "/shutdown";
-                    connection = (HttpURLConnection) new URL(url).openConnection();
-                    connection.setRequestMethod("POST");
-                    int responseCode = connection.getResponseCode();
-                    if (responseCode == 200) {
-                        logger.info("Shutdown OK");
-
-                        // launch again
-                        return run(clazz, args);
-                    }
-                    else {
-                        throw new IllegalStateException("Invalid response code : " + responseCode);
-                    }
+                    // launch again
+                    return run(clazz, args);
                 }
-                catch (Exception e2) {
-                    throw new IllegalStateException("Shutdown failed", e2);
-                }
-                finally {
-                    IOUtils.close(connection);
+                else {
+                    throw new IllegalStateException("Invalid response code : " + responseCode);
                 }
             }
-            else {
-                throw e;
+            catch (Exception e2) {
+                throw new IllegalStateException("Shutdown failed", e2);
+            }
+            finally {
+                IOUtils.close(connection);
             }
         }
     }
