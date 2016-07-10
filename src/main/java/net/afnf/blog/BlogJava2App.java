@@ -6,7 +6,6 @@ import java.net.URL;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.embedded.PortInUseException;
@@ -15,7 +14,6 @@ import org.springframework.context.ConfigurableApplicationContext;
 import net.afnf.blog.config.AppConfig;
 
 @SpringBootApplication
-@MapperScan("net.afnf.blog.mapper")
 public class BlogJava2App {
 
     private static Log logger = LogFactory.getLog(BlogJava2App.class);

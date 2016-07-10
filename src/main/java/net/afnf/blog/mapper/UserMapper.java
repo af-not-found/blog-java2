@@ -1,10 +1,14 @@
 package net.afnf.blog.mapper;
 
 import java.util.List;
-import net.afnf.blog.domain.User;
-import net.afnf.blog.domain.UserExample;
+
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import net.afnf.blog.domain.User;
+import net.afnf.blog.domain.UserExample;
+
+@Mapper
 public interface UserMapper {
 
     /**
