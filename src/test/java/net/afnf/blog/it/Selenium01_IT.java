@@ -7,8 +7,11 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -555,6 +558,31 @@ public class Selenium01_IT extends SeleniumTestBase {
             assertEquals("tagName=" + tagName, expectedTags[i], matches.get(0).getText());
 
             assertEquals("tagName=" + tagName, entryCount, find(".summary_entry_title").size());
+        }
+    }
+
+    @Test
+    public void test114_user() throws Throwable {
+
+        String[] urlTags = {
+                "%E3%82%BF%E3%82%BF+%E3%82%B0-%3Dc", // タタ+グ-=c
+                "%E3%82%BF%E3%82%BF%20%E3%82%B0-%3Dc", // タタ%20グ-=c
+                "%E3%82%BF%E3%82%BF%2B%E3%82%B0-%3Dc", // タタ%2Bグ-=c  (%2B == "+")
+        };
+
+        for (int i = 0; i < urlTags.length; i++) {
+            String urlTag = urlTags[i];
+
+            // wd.getではURLエンコードが制御できないのでURLConnectionでテストする
+            URL url = new URL(baseurl + "/t/" + urlTag);
+            try (InputStream is = url.openStream()) {
+                String content = IOUtils.toString(is, "utf-8");
+                String nearTag = StringUtils.substringBetween(content, "<div class=\"label label-success\">", "</div>");
+                String tag = StringUtils.substringBetween(nearTag, "<span>", "</span>");
+                String count = StringUtils.substringBetween(nearTag, "(<span>", "</span>)");
+                assertEquals("tagName=" + urlTag, "タタ グ-=c", tag);
+                assertEquals("tagName=" + urlTag, "1", count);
+            }
         }
     }
 }

@@ -54,6 +54,7 @@ public class BlogAction extends TokenCheckableAction {
 
         // tagListにない場合はtopへ
         if (StringUtils.isNotBlank(tag)) {
+            tag = StringUtils.replace(tag, "+", " "); // "+"を半角スペースに置換
             boolean found = false;
             List<NameCountPair> tagList = es.getEntryCache().getTagList();
             if (tagList != null) {
