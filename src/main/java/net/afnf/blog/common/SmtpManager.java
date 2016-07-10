@@ -102,7 +102,7 @@ public class SmtpManager {
                 boolean smtps = StringUtils.equalsIgnoreCase(type, AuthType.SMTPS.name());
                 boolean gmailapi = StringUtils.equalsIgnoreCase(type, AuthType.GMAILAPI.name());
 
-                // GMail API以外
+                // Gmail API以外
                 if (gmailapi == false) {
 
                     // パスワードの復号
@@ -145,7 +145,7 @@ public class SmtpManager {
                 msg.setText(message, "iso-2022-jp");
                 InternetAddress toAddress = new InternetAddress(to);
 
-                // GMail API
+                // Gmail API
                 if (gmailapi) {
                     msg.setRecipient(RecipientType.TO, toAddress);
 
@@ -160,7 +160,7 @@ public class SmtpManager {
                     Gmail service = getGmailService(System.getProperty("user.home"), AppConfig.getInstance().getTitle());
                     service.users().messages().send("me", gmailmsg).execute();
                 }
-                // GMail API以外
+                // Gmail API以外
                 else {
                     // 送信
                     String protocol = smtps ? "smtps" : "smtp";
