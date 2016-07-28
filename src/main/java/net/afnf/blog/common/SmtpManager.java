@@ -193,14 +193,15 @@ public class SmtpManager {
         List<String> SCOPES = Arrays.asList(GmailScopes.GMAIL_SEND);
 
         // Credential取得
-        InputStream in = FileUtils.openInputStream(SECRET_JSON);
-        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets,
-                SCOPES).setDataStoreFactory(DATA_STORE_FACTORY).setAccessType("offline").build();
-        Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
+        try (InputStream in = FileUtils.openInputStream(SECRET_JSON)) {
+            GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
+            GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(HTTP_TRANSPORT, JSON_FACTORY,
+                    clientSecrets, SCOPES).setDataStoreFactory(DATA_STORE_FACTORY).setAccessType("offline").build();
+            Credential credential = new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize("user");
 
-        // Gmailインスタンス生成
-        return new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(appName).build();
+            // Gmailインスタンス生成
+            return new Gmail.Builder(HTTP_TRANSPORT, JSON_FACTORY, credential).setApplicationName(appName).build();
+        }
     }
 
     //    /**
