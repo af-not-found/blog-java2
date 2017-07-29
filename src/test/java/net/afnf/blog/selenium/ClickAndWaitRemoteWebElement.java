@@ -12,9 +12,6 @@ import org.openqa.selenium.Rectangle;
 import org.openqa.selenium.TimeoutException;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.phantomjs.PhantomJSDriver;
-
-import net.afnf.blog.it.SeleniumTestBase;
 
 class ClickAndWaitRemoteWebElement implements WebElement {
 
@@ -34,14 +31,7 @@ class ClickAndWaitRemoteWebElement implements WebElement {
             parent.click();
         }
         catch (TimeoutException e) {
-            // phantomjsが偶発的にTimeoutExceptionを出してしまう
-            if (wd.getInstance() instanceof PhantomJSDriver) {
-                SeleniumTestBase.takeScreenShot(wd, "TimeoutException");
-                logger.warn("TimeoutException", e);
-            }
-            else {
-                throw e;
-            }
+            throw e;
         }
         wd.waitForPageLoaded();
     }

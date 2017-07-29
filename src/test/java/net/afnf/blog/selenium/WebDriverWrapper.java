@@ -13,6 +13,9 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
@@ -29,8 +32,8 @@ public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptE
 
     static {
         webDriverMap.put("firefox", org.openqa.selenium.firefox.FirefoxDriver.class);
-        webDriverMap.put("phantomjs", org.openqa.selenium.phantomjs.PhantomJSDriver.class);
         webDriverMap.put("chrome", org.openqa.selenium.chrome.ChromeDriver.class);
+        webDriverMap.put("chrome-headless", org.openqa.selenium.chrome.ChromeDriver.class);
         webDriverMap.put("ie", org.openqa.selenium.ie.InternetExplorerDriver.class);
     }
 
@@ -39,11 +42,28 @@ public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptE
     }
 
     public WebDriverWrapper(String driverName) throws Exception {
-        instance = webDriverMap.get(driverName).newInstance();
 
-        if (instance instanceof InternetExplorerDriver) {
-            DesiredCapabilities capabilities = (DesiredCapabilities) ((InternetExplorerDriver) getInstance()).getCapabilities();
+        Class<? extends RemoteWebDriver> clazz = webDriverMap.get(driverName);
+
+        if (clazz.equals(InternetExplorerDriver.class)) {
+            DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
             capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
+            instance = new InternetExplorerDriver(capabilities);
+        }
+        else if (clazz.equals(FirefoxDriver.class)) {
+            // FIXME selenium 2.53.xではもはやFirefoxDriverが正常動作しない
+            DesiredCapabilities capabilities = DesiredCapabilities.firefox();
+            capabilities.setCapability("marionette", true);
+            instance = new FirefoxDriver(capabilities);
+        }
+        else if(driverName.equals("chrome-headless")) {
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.addArguments("--headless");
+            chromeOptions.addArguments("--disable-gpu");
+            instance = new ChromeDriver(chromeOptions);
+        }
+        else {
+            instance = webDriverMap.get(driverName).newInstance();
         }
 
         expectation = new ExpectedCondition<Boolean>() {
@@ -58,6 +78,18 @@ public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptE
         Wait<WebDriver> wait = new WebDriverWait(this, 100);
         wait.until(expectation);
     }
+
+    // for Selenium 3.4.x
+    //    protected void waitForPageLoaded() {
+    //        FluentWait<WebDriver> wait = new WebDriverWait(this, 100);
+    //
+    //        wait.until(new Function<WebDriver, Boolean>() {
+    //            public Boolean apply(WebDriver driver) {
+    //                return ((JavascriptExecutor) driver)
+    //                        .executeScript("return document.readyState == 'complete' && afnfblog.loading == false").equals(true);
+    //            }
+    //        });
+    //    }
 
     @Override
     public WebElement findElement(By by) {
