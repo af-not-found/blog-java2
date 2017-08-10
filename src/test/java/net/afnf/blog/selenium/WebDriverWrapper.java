@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Function;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
@@ -21,7 +22,7 @@ import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
-import org.openqa.selenium.support.ui.Wait;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptExecutor {
@@ -75,21 +76,15 @@ public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptE
     }
 
     protected void waitForPageLoaded() {
-        Wait<WebDriver> wait = new WebDriverWait(this, 100);
-        wait.until(expectation);
-    }
+        FluentWait<WebDriver> wait = new WebDriverWait(this, 100);
 
-    // for Selenium 3.4.x
-    //    protected void waitForPageLoaded() {
-    //        FluentWait<WebDriver> wait = new WebDriverWait(this, 100);
-    //
-    //        wait.until(new Function<WebDriver, Boolean>() {
-    //            public Boolean apply(WebDriver driver) {
-    //                return ((JavascriptExecutor) driver)
-    //                        .executeScript("return document.readyState == 'complete' && afnfblog.loading == false").equals(true);
-    //            }
-    //        });
-    //    }
+        wait.until(new Function<WebDriver, Boolean>() {
+            public Boolean apply(WebDriver driver) {
+                return ((JavascriptExecutor) driver)
+                        .executeScript("return document.readyState == 'complete' && afnfblog.loading == false").equals(true);
+            }
+        });
+    }
 
     @Override
     public WebElement findElement(By by) {

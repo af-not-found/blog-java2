@@ -8,7 +8,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.context.embedded.PortInUseException;
+import org.springframework.boot.web.server.PortInUseException;
 import org.springframework.context.ConfigurableApplicationContext;
 
 import net.afnf.blog.config.AppConfig;
@@ -31,7 +31,7 @@ public class BlogJava2App {
             HttpURLConnection connection = null;
             try {
                 AppConfig appConfig = AppConfig.getInstance();
-                String url = "http://localhost:" + appConfig.getManagementPort() + "/shutdown";
+                String url = "http://localhost:" + appConfig.getManagementPort() + "/manage/shutdown";
                 connection = (HttpURLConnection) new URL(url).openConnection();
                 connection.setRequestMethod("POST");
                 int responseCode = connection.getResponseCode();
