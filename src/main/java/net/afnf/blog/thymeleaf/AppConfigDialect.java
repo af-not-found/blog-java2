@@ -1,38 +1,54 @@
 package net.afnf.blog.thymeleaf;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
+
+import org.thymeleaf.context.IExpressionContext;
+import org.thymeleaf.dialect.IExpressionObjectDialect;
+import org.thymeleaf.expression.IExpressionObjectFactory;
 
 import net.afnf.blog.config.AppConfig;
 
-import org.thymeleaf.context.IProcessingContext;
-import org.thymeleaf.dialect.AbstractDialect;
-import org.thymeleaf.dialect.IExpressionEnhancingDialect;
-import org.thymeleaf.processor.IProcessor;
+public class AppConfigDialect implements IExpressionObjectDialect {
 
-public class AppConfigDialect extends AbstractDialect implements IExpressionEnhancingDialect {
+    private static final String EXPRESSION_OBJECT_NAME = "conf";
 
-    public AppConfigDialect() {
-        super();
+    @SuppressWarnings("serial")
+    private static final Set<String> ALL_EXPRESSION_NAMES = new HashSet<String>() {
+        {
+            add(EXPRESSION_OBJECT_NAME);
+        }
+    };
+
+    @Override
+    public String getName() {
+        return "AppConfig";
     }
 
     @Override
-    public String getPrefix() {
-        return "conf";
+    public IExpressionObjectFactory getExpressionObjectFactory() {
+        return new AppConfigExpressionObjectFactory();
     }
 
-    @Override
-    public Set<IProcessor> getProcessors() {
-        final Set<IProcessor> processors = new HashSet<IProcessor>(2, 1);
-        return processors;
-    }
+    public static class AppConfigExpressionObjectFactory implements IExpressionObjectFactory {
 
-    @Override
-    public Map<String, Object> getAdditionalExpressionObjects(final IProcessingContext processingContext) {
-        final Map<String, Object> additionalExpressionObjects = new HashMap<String, Object>(2, 1.0f);
-        additionalExpressionObjects.put("conf", AppConfig.getInstance());
-        return additionalExpressionObjects;
+        @Override
+        public boolean isCacheable(String expressionObjectName) {
+            return true;
+        }
+
+        @Override
+        public Set<String> getAllExpressionObjectNames() {
+            return ALL_EXPRESSION_NAMES;
+        }
+
+        @Override
+        public Object buildObject(IExpressionContext context, String expressionObjectName) {
+            if (EXPRESSION_OBJECT_NAME.equals(expressionObjectName)) {
+                return AppConfig.getInstance();
+            }
+            return null;
+        }
+
     }
 }

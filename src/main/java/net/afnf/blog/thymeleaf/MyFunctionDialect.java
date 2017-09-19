@@ -8,12 +8,11 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.thymeleaf.Arguments;
-import org.thymeleaf.Configuration;
-import org.thymeleaf.dialect.AbstractDialect;
-import org.thymeleaf.dom.Element;
+import org.thymeleaf.dialect.AbstractProcessorDialect;
 import org.thymeleaf.processor.IProcessor;
 import org.thymeleaf.processor.attr.AbstractConditionalVisibilityAttrProcessor;
 import org.thymeleaf.spring4.context.SpringWebContext;
+import org.thymeleaf.standard.StandardDialect;
 import org.thymeleaf.standard.expression.IStandardExpression;
 import org.thymeleaf.standard.expression.IStandardExpressionParser;
 import org.thymeleaf.standard.expression.StandardExpressions;
@@ -24,19 +23,17 @@ import net.afnf.blog.thymeleaf.processor.ProcessorUtil;
 import net.afnf.blog.thymeleaf.processor.TextProcessor;
 import net.afnf.blog.thymeleaf.processor.UTextProcessor;
 
-public class MyFunctionDialect extends AbstractDialect {
+public class MyFunctionDialect extends AbstractProcessorDialect {
+
+    protected static final String PREFIX = "f";
 
     public MyFunctionDialect() {
-        super();
+        super("MyFunctionDialect", PREFIX, StandardDialect.PROCESSOR_PRECEDENCE);
     }
 
-    @Override
-    public String getPrefix() {
-        return "f";
-    }
 
     @Override
-    public Set<IProcessor> getProcessors() {
+    public Set<IProcessor> getProcessors(final String dialectPrefix) {
         final Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new TimeProcessor("time"));
         processors.add(new DateProcessor("date"));
@@ -50,7 +47,7 @@ public class MyFunctionDialect extends AbstractDialect {
 class TimeProcessor extends TextProcessor {
 
     public TimeProcessor(String attrName) {
-        super(attrName);
+        super(MyFunctionDialect.PREFIX, attrName);
     }
 
     protected String process(Object result) {
@@ -61,7 +58,7 @@ class TimeProcessor extends TextProcessor {
 class DateProcessor extends TextProcessor {
 
     public DateProcessor(String attrName) {
-        super(attrName);
+        super(MyFunctionDialect.PREFIX, attrName);
     }
 
     protected String process(Object result) {
@@ -72,7 +69,7 @@ class DateProcessor extends TextProcessor {
 class TitleProcessor extends TextProcessor {
 
     public TitleProcessor(String attrName) {
-        super(attrName);
+        super(MyFunctionDialect.PREFIX, attrName);
     }
 
     @Override
@@ -114,7 +111,7 @@ class TitleProcessor extends TextProcessor {
 class CommentProcessor extends UTextProcessor {
 
     public CommentProcessor(String attrName) {
-        super(attrName);
+        super(MyFunctionDialect.PREFIX, attrName);
     }
 
     protected String process(Object result) {
