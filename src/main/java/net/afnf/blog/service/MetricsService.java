@@ -8,9 +8,8 @@ import java.util.List;
 import org.apache.commons.lang3.tuple.MutablePair;
 import org.apache.commons.lang3.tuple.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.actuate.endpoint.PublicMetrics;
-import org.springframework.boot.actuate.metrics.Metric;
 import org.springframework.stereotype.Service;
+import org.springframework.boot.actuate.endpoint.*;
 
 @Service
 public class MetricsService {
