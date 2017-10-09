@@ -125,6 +125,10 @@
 			<version>2.4.8</version>
 		</dependency>
 		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
@@ -202,6 +206,9 @@
 				<artifactId>maven-failsafe-plugin</artifactId>
 				<configuration>
 					<argLine>-Dspring.profiles.active=${spring.profiles.active} ${jacocoArgs}</argLine>
+					<classpathDependencyExcludes>
+						<classpathDependencyExcludes>com.google.guava:guava-jdk5</classpathDependencyExcludes>
+					</classpathDependencyExcludes>
 				</configuration>
 				<executions>
 					<execution>
@@ -245,39 +252,10 @@
 					<dependency>
 						<groupId>org.postgresql</groupId>
 						<artifactId>postgresql</artifactId>
-						<version>9.4.1212.jre7</version>
+						<version>42.1.4</version>
 					</dependency>
 				</dependencies>
 			</plugin>
 		</plugins>
-		<pluginManagement>
-			<plugins>
-				<!--This plugin's configuration is used to store Eclipse m2e settings only. It has no influence on the Maven build itself. -->
-				<plugin>
-					<groupId>org.eclipse.m2e</groupId>
-					<artifactId>lifecycle-mapping</artifactId>
-					<version>1.0.0</version>
-					<configuration>
-						<lifecycleMappingMetadata>
-							<pluginExecutions>
-								<pluginExecution>
-									<pluginExecutionFilter>
-										<groupId>org.jacoco</groupId>
-										<artifactId>jacoco-maven-plugin</artifactId>
-										<versionRange>[0.7.5.201505241946,)</versionRange>
-										<goals>
-											<goal>prepare-agent</goal>
-										</goals>
-									</pluginExecutionFilter>
-									<action>
-										<ignore></ignore>
-									</action>
-								</pluginExecution>
-							</pluginExecutions>
-						</lifecycleMappingMetadata>
-					</configuration>
-				</plugin>
-			</plugins>
-		</pluginManagement>
 	</build>
 </project>

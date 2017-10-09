@@ -55,7 +55,6 @@ public class Selenium02_IT extends SeleniumTestBase {
         assertEquals("Markdownのテスト1234789\ntitle10000\ntitle9999\ntitle9998\ntitle9997\ntitle9996\ntitle9995\ntitle9994\nmore...",
                 find(".sb_recents").get(0).getText());
 
-        wd.findElement(By.cssSelector("div.col-md-9.maindiv")).click();
         wd.findElement(By.linkText("3")).click();
         wd.findElement(By.linkText("8")).click();
         wd.findElement(By.linkText("14")).click();
@@ -66,7 +65,6 @@ public class Selenium02_IT extends SeleniumTestBase {
         wd.findElement(By.linkText(">")).click();
         wd.findElement(By.linkText("35")).click();
         wd.findElement(By.linkText("Sep 2012")).click();
-        wd.findElement(By.cssSelector("div.summary_entries_container")).click();
         wd.findElement(By.linkText("title9430")).click();
         wd.findElement(By.id("name")).click();
         wd.findElement(By.id("name")).clear();

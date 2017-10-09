@@ -108,7 +108,7 @@ public class Selenium03_IT extends SeleniumTestBase {
 
         wd.findElement(By.xpath("//div[@class='btn-group']//button[.='metrics']")).click();
 
-        boolean httpsessions_active = false;
+        boolean dbconn_active = false;
         boolean instance_uptime = false;
         boolean threads_peak = false;
         boolean classes_loaded = false;
@@ -117,13 +117,13 @@ public class Selenium03_IT extends SeleniumTestBase {
         for (WebElement element : elements) {
             String text = element.getText();
             logger.info(text);
-            httpsessions_active |= StringUtils.startsWith(text, "httpsessions.active");
-            instance_uptime |= StringUtils.startsWith(text, "instance.uptime");
-            threads_peak |= StringUtils.startsWith(text, "threads.peak");
-            classes_loaded |= StringUtils.startsWith(text, "classes.loaded");
+            dbconn_active |= StringUtils.startsWith(text, "DataSource.active.connections");
+            instance_uptime |= StringUtils.startsWith(text, "process.uptime");
+            threads_peak |= StringUtils.startsWith(text, "jvm.threads.peak");
+            classes_loaded |= StringUtils.startsWith(text, "jvm.classes.loaded");
         }
 
-        assertTrue(httpsessions_active);
+        assertTrue(dbconn_active);
         assertTrue(instance_uptime);
         assertTrue(threads_peak);
         assertTrue(classes_loaded);
