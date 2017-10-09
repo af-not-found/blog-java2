@@ -15,7 +15,7 @@ import org.springframework.core.io.Resource;
 import org.springframework.web.servlet.config.annotation.ContentNegotiationConfigurer;
 import org.springframework.web.servlet.config.annotation.PathMatchConfigurer;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
-import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.resource.PathResourceResolver;
 import org.springframework.web.servlet.resource.ResourceResolverChain;
 import org.springframework.web.servlet.resource.ResourceUrlEncodingFilter;
@@ -27,7 +27,7 @@ import net.afnf.blog.common.IfModifiedSinceFilter;
 import net.afnf.blog.common.MyApplicationListener;
 
 @Configuration
-public class WebConfig extends WebMvcConfigurerAdapter {
+public class WebConfig implements WebMvcConfigurer {
 
     private static final Log logger = LogFactory.getLog(WebConfig.class);
 
