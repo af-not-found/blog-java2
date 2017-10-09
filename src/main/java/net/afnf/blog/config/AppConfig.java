@@ -45,7 +45,7 @@ public class AppConfig {
     @Value("${management.port}")
     private String managementPort;
 
-    @Value("${server.context-path}")
+    @Value("${server.servlet.context-path}")
     private String contextPath;
 
     private static AppConfig instance = null;

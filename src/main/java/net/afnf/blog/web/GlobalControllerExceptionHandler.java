@@ -25,7 +25,7 @@ class GlobalDefaultExceptionHandler {
 
     private static Logger logger = LoggerFactory.getLogger(GlobalDefaultExceptionHandler.class);
 
-    @Value("${server.context-path}")
+    @Value("${server.servlet.context-path}")
     private String contextPath;
 
     @ExceptionHandler(value = Exception.class)
