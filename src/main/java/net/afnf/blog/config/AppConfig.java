@@ -42,9 +42,6 @@ public class AppConfig {
     @Value("${bj2.selenium.webdriver}")
     private String seleniumWebdriver = null;
 
-    @Value("${management.port}")
-    private String managementPort;
-
     @Value("${server.servlet.context-path}")
     private String contextPath;
 
@@ -55,6 +52,9 @@ public class AppConfig {
     }
 
     public static AppConfig getInstance() {
+        if (instance == null) {
+            throw new IllegalStateException("AppConfig not initiated yet");
+        }
         return instance;
     }
 
@@ -162,14 +162,6 @@ public class AppConfig {
 
     public void setSeleniumWebdriver(String seleniumWebdriver) {
         this.seleniumWebdriver = seleniumWebdriver;
-    }
-
-    public String getManagementPort() {
-        return managementPort;
-    }
-
-    public void setManagementPort(String managementPort) {
-        this.managementPort = managementPort;
     }
 
     public String getContextPath() {
