@@ -23,7 +23,6 @@ import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.composite.CompositeMeterRegistry;
-import io.micrometer.core.instrument.internal.MeterId;
 
 @Service
 public class MetricsService {
@@ -59,11 +58,6 @@ public class MetricsService {
         while (iterator.hasNext()) {
             Meter meter = (Meter) iterator.next();
             Id meterId = meter.getId();
-            if (meterId instanceof MeterId == false) {
-                logger.warn("non MeterId type : " + meterId);
-                continue;
-            }
-
             StringBuilder sb = new StringBuilder();
             Iterator<Measurement> ite2 = meter.measure().iterator();
             while (ite2.hasNext()) {
@@ -73,11 +67,11 @@ public class MetricsService {
                     sb.append(",");
                 }
             }
-            list.add(new MutablePair<String, String>(meterId2String((MeterId) meterId), sb.toString()));
+            list.add(new MutablePair<String, String>(meterId2String(meterId), sb.toString()));
         }
     }
 
-    protected String meterId2String(MeterId meterId) {
+    protected String meterId2String(Id meterId) {
         StringBuilder sb = new StringBuilder();
         if (meterId.getTags() != null) {
             Iterator<Tag> iterator = meterId.getTags().iterator();
