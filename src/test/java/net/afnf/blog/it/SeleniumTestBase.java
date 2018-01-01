@@ -27,16 +27,16 @@ import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriver.Timeouts;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.firefox.FirefoxDriver;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 
 import net.afnf.blog.SpringTestBase;
 import net.afnf.blog.common.AfnfUtil;
 import net.afnf.blog.config.AppConfig;
-import net.afnf.blog.mapper.EntryMapperCustomized;
 import net.afnf.blog.selenium.SeleniumTestWatcher;
 import net.afnf.blog.selenium.WebDriverWrapper;
 
+@SpringBootTest(webEnvironment = WebEnvironment.DEFINED_PORT)
 public class SeleniumTestBase extends SpringTestBase {
 
     protected static final long POST_WAIT = 500;
@@ -50,9 +50,6 @@ public class SeleniumTestBase extends SpringTestBase {
 
     @Rule
     public SeleniumTestWatcher watcher = new SeleniumTestWatcher();
-
-    @Autowired
-    protected EntryMapperCustomized em;
 
     @Before
     public void before() throws Exception {
@@ -98,10 +95,8 @@ public class SeleniumTestBase extends SpringTestBase {
 
     protected void postAndCloseModal() {
         wd.findElement(By.name("post")).click();
-        // FirefoxDriverだと遅延が必要っぽい
-        if (wd.getInstance() instanceof FirefoxDriver) {
-            AfnfUtil.sleep(200);
-        }
+        // 遅延が必要っぽい
+        AfnfUtil.sleep(200);
         wd.findElement(By.id("close_modal")).click();
     }
 

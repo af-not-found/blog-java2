@@ -117,7 +117,7 @@ public class Selenium03_IT extends SeleniumTestBase {
         for (WebElement element : elements) {
             String text = element.getText();
             logger.info(text);
-            dbconn_active |= StringUtils.startsWith(text, "DataSource.active.connections");
+            dbconn_active |= StringUtils.startsWith(text, "data.source.active.connections[name=dataSource]");
             instance_uptime |= StringUtils.startsWith(text, "process.uptime");
             threads_peak |= StringUtils.startsWith(text, "jvm.threads.peak");
             classes_loaded |= StringUtils.startsWith(text, "jvm.classes.loaded");

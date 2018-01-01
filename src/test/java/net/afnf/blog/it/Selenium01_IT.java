@@ -21,14 +21,19 @@ import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebElement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import net.afnf.blog.common.Crypto;
+import net.afnf.blog.mapper.EntryMapperCustomized;
 import net.afnf.blog.service.TokenService;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class Selenium01_IT extends SeleniumTestBase {
 
     private static Logger logger = LoggerFactory.getLogger(Selenium01_IT.class);
+
+    @Autowired
+    protected EntryMapperCustomized em;
 
     @Test
     public void test101_init() {

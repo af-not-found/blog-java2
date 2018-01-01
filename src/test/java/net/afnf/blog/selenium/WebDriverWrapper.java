@@ -17,8 +17,9 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
-import org.openqa.selenium.remote.DesiredCapabilities;
+import org.openqa.selenium.ie.InternetExplorerOptions;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.remote.RemoteWebElement;
 import org.openqa.selenium.support.ui.ExpectedCondition;
@@ -47,15 +48,13 @@ public class WebDriverWrapper implements WebDriver, TakesScreenshot, JavascriptE
         Class<? extends RemoteWebDriver> clazz = webDriverMap.get(driverName);
 
         if (clazz.equals(InternetExplorerDriver.class)) {
-            DesiredCapabilities capabilities = DesiredCapabilities.internetExplorer();
-            capabilities.setCapability(InternetExplorerDriver.INTRODUCE_FLAKINESS_BY_IGNORING_SECURITY_DOMAINS, true);
-            instance = new InternetExplorerDriver(capabilities);
+            InternetExplorerOptions options = new InternetExplorerOptions().introduceFlakinessByIgnoringSecurityDomains();
+            instance = new InternetExplorerDriver(options);
         }
         else if (clazz.equals(FirefoxDriver.class)) {
-            // FIXME selenium 2.53.xではもはやFirefoxDriverが正常動作しない
-            DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-            capabilities.setCapability("marionette", true);
-            instance = new FirefoxDriver(capabilities);
+            FirefoxOptions options = new FirefoxOptions();
+            options.setCapability("marionette", true);
+            instance = new FirefoxDriver(options);
         }
         else if(driverName.equals("chrome-headless")) {
             ChromeOptions chromeOptions = new ChromeOptions();
