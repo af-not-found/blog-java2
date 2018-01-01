@@ -2,8 +2,8 @@ package net.afnf.blog.domain;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotEmpty;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
 
 public class Comment {
 

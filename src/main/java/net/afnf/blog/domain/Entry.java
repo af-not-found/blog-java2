@@ -6,7 +6,7 @@ import java.util.List;
 import net.afnf.blog.common.AfnfUtil;
 
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotEmpty;
+import javax.validation.constraints.NotEmpty;
 
 public class Entry {
 
