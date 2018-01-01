@@ -252,9 +252,9 @@ body,h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 	margin-left: 10px;
 }
 
-.tags_in_entry {
+.tags_in_entry a {
 	font-size: 90%;
-	margin-left: 10px;
+	margin-left: 5px;
 }
 
 .tags_in_entry a,.tags_in_entry a:VISITED {
